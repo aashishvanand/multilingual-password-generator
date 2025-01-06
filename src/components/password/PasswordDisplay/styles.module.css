@@ -1,0 +1,34 @@
+/**
+ * Styles for password display component
+ */
+.passwordContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.passwordInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  width: 100%;
+  margin-right: 16px;
+  font-family: var(--font-geist-mono);
+  font-size: 2.125rem;
+}
+
+.passwordText {
+  word-break: break-all;
+  letter-spacing: 1px;
+  user-select: none;
+  flex: 1;
+  font-family: var(--font-geist-mono);
+}
+
+.editButton {
+  margin-left: 8px;
+}

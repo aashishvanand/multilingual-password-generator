@@ -1,0 +1,27 @@
+/**
+ * Component-specific styles for the password generator
+ */
+.strengthMeter {
+  margin-bottom: 2rem;
+}
+
+.optionsPanel {
+  margin-top: 2rem;
+}
+
+.languageGroup {
+  margin-top: 1.5rem;
+}
+
+.languageSelector {
+  display: grid;
+  gap: 1rem;
+}
+
+.slider {
+  padding: 1rem 0;
+}
+
+.radioGroup {
+  margin-bottom: 1rem;
+}

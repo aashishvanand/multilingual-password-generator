@@ -1,8 +1,14 @@
+/**
+ * Global styles and CSS variables
+ * Defines theme colors and base styles
+ */
 :root {
+  /* Light theme variables */
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* Dark theme overrides */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -10,6 +16,7 @@
   }
 }
 
+/* Base styles */
 html,
 body {
   max-width: 100vw;
