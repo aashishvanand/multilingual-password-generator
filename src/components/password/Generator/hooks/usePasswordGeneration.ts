@@ -10,21 +10,67 @@ import type { PasswordOptions } from '@/types'
 import { DEFAULT_PASSWORD_LENGTH, DEFAULT_WORD_COUNT } from '@/lib/utils/constants'
 
 // Default options for password mode
-const DEFAULT_PASSWORD_OPTIONS: Partial<PasswordOptions> = {
+const DEFAULT_PASSWORD_OPTIONS: PasswordOptions = {
     uppercase: true,
     lowercase: true,
     numbers: true,
     symbols: false,
-    english: true,  // This needs to be true when uppercase or lowercase is true
+    english: true,
+    hindi: false,
+    tamil: false,
+    telugu: false,
+    bengali: false,
+    gujarati: false,
+    kannada: false,
+    malayalam: false,
+    odia: false,
+    punjabi: false,
+    urdu: false,
+    santali: false,
+    manipuri: false,
+    mandarin: false,
+    spanish: false,
+    russian: false,
+    japanese: false,
+    vietnamese: false,
+    turkish: false,
+    korean: false,
+    french: false,
+    italian: false,
+    iranianPersian: false,
+    javanese: false,
 }
 
 // Default options for passphrase mode
-const DEFAULT_PASSPHRASE_OPTIONS: Partial<PasswordOptions> = {
+const DEFAULT_PASSPHRASE_OPTIONS: PasswordOptions = {
     uppercase: false,
     lowercase: false,
     numbers: false,
     symbols: false,
-    english: true,  // Default language for passphrases
+    english: true,
+    hindi: false,
+    tamil: false,
+    telugu: false,
+    bengali: false,
+    gujarati: false,
+    kannada: false,
+    malayalam: false,
+    odia: false,
+    punjabi: false,
+    urdu: false,
+    santali: false,
+    manipuri: false,
+    mandarin: false,
+    spanish: false,
+    russian: false,
+    japanese: false,
+    vietnamese: false,
+    turkish: false,
+    korean: false,
+    french: false,
+    italian: false,
+    iranianPersian: false,
+    javanese: false,
 }
 
 export function usePasswordGeneration() {
@@ -156,22 +202,14 @@ export function usePasswordGeneration() {
     const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newType = event.target.value as 'password' | 'passphrase'
         setType(newType)
-
+        
         // Reset options based on the new type
         if (newType === 'passphrase') {
-            setOptions(prev => ({
-                ...prev,
-                ...DEFAULT_PASSPHRASE_OPTIONS
-            }))
+            setOptions(DEFAULT_PASSPHRASE_OPTIONS)
         } else {
-            // When switching back to password mode, restore default password options
-            setOptions(prev => ({
-                ...prev,
-                ...DEFAULT_PASSWORD_OPTIONS
-            }))
+            setOptions(DEFAULT_PASSWORD_OPTIONS)
         }
-
-        // Reset error state since we're setting default options
+        
         setHasError(false)
     }
 

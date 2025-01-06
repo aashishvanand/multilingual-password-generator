@@ -69,16 +69,9 @@ export class MultilingualWordGenerator {
 
   constructor() {
     // Initialize word list metadata on construction
-    Object.keys(this.wordLists).forEach(language => {
-      const words = this.wordLists[language].words
-      this.wordLists[language].shortestWordSize = this.findShortestWordLength(words)
-      this.wordLists[language].longestWordSize = this.findLongestWordLength(words)
-    })
+    this.initializeWordListMetadata()
   }
 
-  /**
-    * Initializes metadata for word lists (shortest/longest word lengths)
-    */
   private initializeWordListMetadata() {
     Object.keys(this.wordLists).forEach(language => {
       const words = this.wordLists[language].words
@@ -87,55 +80,33 @@ export class MultilingualWordGenerator {
     })
   }
 
-  /**
-   * Find the shortest word length in a word list
-   */
   private findShortestWordLength(words: string[]): number {
     return words.reduce((shortest, word) =>
       word.length < shortest ? word.length : shortest
-      , Infinity)
+    , Infinity)
   }
 
-  /**
-   * Find the longest word length in a word list
-   */
   private findLongestWordLength(words: string[]): number {
     return words.reduce((longest, word) =>
       word.length > longest ? word.length : longest
-      , 0)
+    , 0)
   }
 
-  /**
-   * Generate a random integer less than the specified value
-   */
   private randInt(lessThan: number, random?: () => number): number {
     const r = random ? random() : Math.random()
     return Math.floor(r * lessThan)
   }
 
-
-  /**
-   * Ensure word size is within the valid range for the language
-   */
   private limitWordSize(wordSize: number, language: string): number {
     const { shortestWordSize = 1, longestWordSize = 20 } = this.wordLists[language]
     return Math.min(Math.max(wordSize, shortestWordSize), longestWordSize)
   }
 
-
-  /**
-   * Generate a random word from the specified language
-   */
   private generateRandomWord(language: string, random?: () => number): string {
     const words = this.wordLists[language].words
     return words[this.randInt(words.length, random)]
   }
 
-  /**
-   * Generate a word based on the specified options
-   * @param options - Configuration for word generation
-   * @returns Generated word or array of words
-   */
   public generate(options?: GenerateOptions): string | string[] {
     if (options === undefined) {
       return this.generateRandomWord('english')
@@ -149,14 +120,16 @@ export class MultilingualWordGenerator {
       throw new Error(`Language '${language}' not supported`)
     }
 
-    // Apply length constraints
-    const min = typeof options.minLength !== 'number'
-      ? this.wordLists[language].shortestWordSize
-      : this.limitWordSize(options.minLength, language)
+    const languageConfig = this.wordLists[language]
+    
+    // Apply length constraints with fallbacks
+    const minLength = typeof options.minLength === 'number'
+      ? this.limitWordSize(options.minLength, language)
+      : (languageConfig.shortestWordSize || 1)
 
-    const max = typeof options.maxLength !== 'number'
-      ? this.wordLists[language].longestWordSize
-      : this.limitWordSize(options.maxLength, language)
+    const maxLength = typeof options.maxLength === 'number'
+      ? this.limitWordSize(options.maxLength, language)
+      : (languageConfig.longestWordSize || 20)
 
     // Generate word meeting length requirements
     let rightSize = false
@@ -164,15 +137,12 @@ export class MultilingualWordGenerator {
 
     while (!rightSize) {
       wordUsed = this.generateRandomWord(language, random?.bind(random))
-      rightSize = wordUsed.length <= max && wordUsed.length >= min
+      rightSize = wordUsed.length <= maxLength && wordUsed.length >= minLength
     }
 
     return wordUsed
   }
 
-  /**
-   * Get list of supported languages
-   */
   public getLanguages(): string[] {
     return Object.keys(this.wordLists)
   }

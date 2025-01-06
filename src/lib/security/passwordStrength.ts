@@ -61,7 +61,12 @@ export interface StrengthResult {
         suggestions: string[];
     };
     calcTime: number;
-    sequence: unknown[];
+    sequence: Array<{
+        pattern: string;
+        token: string;
+        i: number;
+        j: number;
+    }>;
 }
 
 // Default strength result when no password is provided

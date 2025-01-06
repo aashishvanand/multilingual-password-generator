@@ -8,6 +8,7 @@ interface OptionsPanelProps {
     wordCount: number
     options: PasswordOptions
     hasError: boolean
+    mode: 'light' | 'dark'
     onTypeChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onLengthChange: (value: number) => void
     onWordCountChange: (value: number) => void
@@ -20,6 +21,7 @@ export function OptionsPanel({
     wordCount,
     options,
     hasError,
+    mode,
     onTypeChange,
     onLengthChange,
     onWordCountChange,
@@ -94,6 +96,7 @@ export function OptionsPanel({
                 options={options}
                 onChange={onOptionsChange}
                 type={type}
+                mode={mode}
             />
         </Box>
     )

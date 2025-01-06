@@ -10,9 +10,10 @@ interface LanguageSelectorProps {
     options: PasswordOptions
     onChange: (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => void
     type: 'password' | 'passphrase'
+    mode: 'light' | 'dark'
 }
 
-export default function LanguageSelector({ options, onChange, type }: LanguageSelectorProps) {
+export default function LanguageSelector({ options, onChange, type, mode }: LanguageSelectorProps) {
     // Render different sets of options based on the generation type
     if (type === 'password') {
         return (
@@ -31,6 +32,7 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                                 />
                             }
                             label="A-Z"
+                            sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                         />
                         <FormControlLabel
                             control={
@@ -40,6 +42,7 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                                 />
                             }
                             label="a-z"
+                            sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                         />
                         <FormControlLabel
                             control={
@@ -49,6 +52,7 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                                 />
                             }
                             label="0-9"
+                            sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                         />
                         <FormControlLabel
                             control={
@@ -58,231 +62,77 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                                 />
                             }
                             label="!@#$%^&*"
+                            sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                         />
                     </Stack>
                 </FormGroup>
 
                 {/* Script Sections */}
-                <Typography variant="subtitle1" color="primary" fontWeight="medium" className="mt-6">
+                <Typography variant="subtitle1" color="primary" fontWeight="medium" sx={{ mt: 3 }}>
                     Indian Scripts
                 </Typography>
                 <FormGroup>
                     <Stack direction="row" flexWrap="wrap" gap={2}>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.hindi}
-                                    onChange={onChange('hindi')}
-                                />
-                            }
-                            label="Hindi"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.tamil}
-                                    onChange={onChange('tamil')}
-                                />
-                            }
-                            label="Tamil"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.telugu}
-                                    onChange={onChange('telugu')}
-                                />
-                            }
-                            label="Telugu"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.bengali}
-                                    onChange={onChange('bengali')}
-                                />
-                            }
-                            label="Bengali"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.gujarati}
-                                    onChange={onChange('gujarati')}
-                                />
-                            }
-                            label="Gujarati"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.kannada}
-                                    onChange={onChange('kannada')}
-                                />
-                            }
-                            label="Kannada"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.malayalam}
-                                    onChange={onChange('malayalam')}
-                                />
-                            }
-                            label="Malayalam"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.odia}
-                                    onChange={onChange('odia')}
-                                />
-                            }
-                            label="Odia"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.punjabi}
-                                    onChange={onChange('punjabi')}
-                                />
-                            }
-                            label="Punjabi"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.urdu}
-                                    onChange={onChange('urdu')}
-                                />
-                            }
-                            label="Urdu"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.santali}
-                                    onChange={onChange('santali')}
-                                />
-                            }
-                            label="Santali"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.manipuri}
-                                    onChange={onChange('manipuri')}
-                                />
-                            }
-                            label="Manipuri"
-                        />
+                        {[
+                            { key: 'hindi', label: 'Hindi' },
+                            { key: 'tamil', label: 'Tamil' },
+                            { key: 'telugu', label: 'Telugu' },
+                            { key: 'bengali', label: 'Bengali' },
+                            { key: 'gujarati', label: 'Gujarati' },
+                            { key: 'kannada', label: 'Kannada' },
+                            { key: 'malayalam', label: 'Malayalam' },
+                            { key: 'odia', label: 'Odia' },
+                            { key: 'punjabi', label: 'Punjabi' },
+                            { key: 'urdu', label: 'Urdu' },
+                            { key: 'santali', label: 'Santali' },
+                            { key: 'manipuri', label: 'Manipuri' }
+                        ].map(({ key, label }) => (
+                            <FormControlLabel
+                                key={key}
+                                control={
+                                    <Checkbox
+                                        checked={options[key as keyof PasswordOptions]}
+                                        onChange={onChange(key)}
+                                    />
+                                }
+                                label={label}
+                                sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
+                            />
+                        ))}
                     </Stack>
                 </FormGroup>
 
-                <Typography variant="subtitle1" color="primary" fontWeight="medium" className="mt-6">
+                <Typography variant="subtitle1" color="primary" fontWeight="medium" sx={{ mt: 3 }}>
                     International Scripts
                 </Typography>
                 <FormGroup>
                     <Stack direction="row" flexWrap="wrap" gap={2}>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.mandarin}
-                                    onChange={onChange('mandarin')}
-                                />
-                            }
-                            label="Mandarin"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.spanish}
-                                    onChange={onChange('spanish')}
-                                />
-                            }
-                            label="Spanish"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.russian}
-                                    onChange={onChange('russian')}
-                                />
-                            }
-                            label="Russian"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.japanese}
-                                    onChange={onChange('japanese')}
-                                />
-                            }
-                            label="Japanese"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.vietnamese}
-                                    onChange={onChange('vietnamese')}
-                                />
-                            }
-                            label="Vietnamese"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.turkish}
-                                    onChange={onChange('turkish')}
-                                />
-                            }
-                            label="Turkish"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.korean}
-                                    onChange={onChange('korean')}
-                                />
-                            }
-                            label="Korean"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.french}
-                                    onChange={onChange('french')}
-                                />
-                            }
-                            label="French"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.italian}
-                                    onChange={onChange('italian')}
-                                />
-                            }
-                            label="Italian"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.iranianPersian}
-                                    onChange={onChange('iranianPersian')}
-                                />
-                            }
-                            label="Iranian Persian"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={options.javanese}
-                                    onChange={onChange('javanese')}
-                                />
-                            }
-                            label="Javanese"
-                        />
+                        {[
+                            { key: 'english', label: 'English' },
+                            { key: 'mandarin', label: 'Mandarin' },
+                            { key: 'spanish', label: 'Spanish' },
+                            { key: 'russian', label: 'Russian' },
+                            { key: 'japanese', label: 'Japanese' },
+                            { key: 'vietnamese', label: 'Vietnamese' },
+                            { key: 'turkish', label: 'Turkish' },
+                            { key: 'korean', label: 'Korean' },
+                            { key: 'french', label: 'French' },
+                            { key: 'italian', label: 'Italian' },
+                            { key: 'iranianPersian', label: 'Iranian Persian' },
+                            { key: 'javanese', label: 'Javanese' }
+                        ].map(({ key, label }) => (
+                            <FormControlLabel
+                                key={key}
+                                control={
+                                    <Checkbox
+                                        checked={options[key as keyof PasswordOptions]}
+                                        onChange={onChange(key)}
+                                    />
+                                }
+                                label={label}
+                                sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
+                            />
+                        ))}
                     </Stack>
                 </FormGroup>
             </Box>
@@ -305,6 +155,7 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                             />
                         }
                         label="English"
+                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                     />
                     <FormControlLabel
                         control={
@@ -314,6 +165,7 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                             />
                         }
                         label="Hindi"
+                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                     />
                     <FormControlLabel
                         control={
@@ -323,6 +175,7 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                             />
                         }
                         label="Tamil"
+                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                     />
                     <FormControlLabel
                         control={
@@ -332,6 +185,7 @@ export default function LanguageSelector({ options, onChange, type }: LanguageSe
                             />
                         }
                         label="Telugu"
+                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                     />
                 </Stack>
             </FormGroup>

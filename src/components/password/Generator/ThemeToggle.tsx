@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { LightMode, DarkMode } from '@mui/icons-material';
 
-const ThemeToggle = ({ mode, onToggle }) => {
+interface ThemeToggleProps {
+    mode: 'light' | 'dark';
+    onToggle: () => void;
+}
+
+const ThemeToggle = ({ mode, onToggle }: ThemeToggleProps) => {
     const [mounted, setMounted] = useState(false);
 
     // Avoid hydration mismatch
@@ -17,19 +22,19 @@ const ThemeToggle = ({ mode, onToggle }) => {
     return (
         <IconButton
             onClick={onToggle}
+            color="inherit"
+            aria-label="toggle theme"
             sx={{
                 position: 'fixed',
-                top: '1rem',
-                right: '1rem',
-                bgcolor: mode === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)',
-                color: mode === 'light' ? '#000' : '#fff',
+                bottom: 16,
+                right: 16,
+                bgcolor: mode === 'light' ? 'grey.200' : 'grey.800',
                 '&:hover': {
-                    bgcolor: mode === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)',
-                }
-            }
-            }
+                    bgcolor: mode === 'light' ? 'grey.300' : 'grey.700',
+                },
+            }}
         >
-            {mode === 'light' ? <DarkMode sx={{ fontSize: 20 }} /> : <LightMode sx={{ fontSize: 20 }} />}
+            {mode === 'light' ? <DarkMode /> : <LightMode />}
         </IconButton>
     );
 };

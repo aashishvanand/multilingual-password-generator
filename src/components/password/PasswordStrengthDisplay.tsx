@@ -22,6 +22,13 @@ interface PasswordStrengthDisplayProps {
     mode: 'light' | 'dark';
 }
 
+interface SequencePattern {
+    pattern: string;
+    token: string;
+    i: number;
+    j: number;
+}
+
 export const PasswordStrengthDisplay = ({ strength, mode }: PasswordStrengthDisplayProps) => {
     const formatPattern = (pattern: { pattern: string; token: string }) => {
         // If it's a bruteforce pattern, just show the type without the token
@@ -122,7 +129,7 @@ export const PasswordStrengthDisplay = ({ strength, mode }: PasswordStrengthDisp
                     </Box>
                 )}
 
-                {strength.sequence.length > 0 && strength.sequence.some(p => p.pattern !== 'bruteforce') && (
+                {strength.sequence.length > 0 && (strength.sequence as SequencePattern[]).some(p => p.pattern !== 'bruteforce') && (
                     <Box>
                         <Typography variant="subtitle1" color="primary" gutterBottom>
                             Pattern Analysis
@@ -136,7 +143,7 @@ export const PasswordStrengthDisplay = ({ strength, mode }: PasswordStrengthDisp
                                 gap: 1
                             }}
                         >
-                            {strength.sequence
+                            {(strength.sequence as SequencePattern[])
                                 .filter(pattern => pattern.pattern !== 'bruteforce')
                                 .map((pattern, index) => (
                                     <Typography key={index} variant="body2">

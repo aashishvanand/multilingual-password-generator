@@ -36,6 +36,8 @@ export interface PasswordOptions {
   italian: boolean
   iranianPersian: boolean
   javanese: boolean
+
+  [key: string]: boolean
 }
 
 /**
