@@ -1,5 +1,6 @@
-import { Typography, IconButton, Box } from '@mui/material'
-import { Edit } from '@mui/icons-material'
+import { Typography, IconButton, Box } from '@mui/material';
+import { Edit } from '@mui/icons-material';
+import { useState, useEffect } from 'react';
 
 /**
  * Component for displaying the generated password with edit functionality
@@ -42,49 +43,100 @@ export function PasswordDisplay({
   setIsEditing,
   setPassword,
 }: PasswordDisplayProps) {
+  const [editedPassword, setEditedPassword] = useState(password);
+
+  // Sync editedPassword with password prop when it changes
+  useEffect(() => {
+    setEditedPassword(password);
+  }, [password]);
+
+  const handleSave = () => {
+    setPassword(editedPassword);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditedPassword(password);
+    setIsEditing(false);
+  };
+
   return (
-    <Box sx={{ width: '100%' }}>
-      {isEditing ? (
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          autoFocus
-          style={{
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            color: mode === 'light' ? '#000032' : '#fff',
-            width: '100%',
-            fontFamily: 'monospace',
-            fontSize: '2rem',
-          }}
-        />
-      ) : (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography
-            variant="h4"
-            sx={{
-              fontFamily: 'monospace',
+    <Box sx={{ 
+      width: '100%',
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: 2,
+    }}>
+      <Box sx={{ 
+        flexGrow: 1,
+        minWidth: 0,
+        width: '100%',
+      }}>
+        {isEditing ? (
+          <textarea
+            value={editedPassword}
+            onChange={(e) => setEditedPassword(e.target.value)}
+            onBlur={handleSave}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && e.ctrlKey) {
+                handleSave();
+              } else if (e.key === 'Escape') {
+                handleCancel();
+              }
+            }}
+            autoFocus
+            style={{
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
               color: mode === 'light' ? '#000032' : '#fff',
-              letterSpacing: 1,
+              width: '100%',
+              fontFamily: 'var(--font-geist-mono)',
+              fontSize: 'clamp(14px, 2vw, 24px)',
+              wordBreak: 'break-all',
+              lineHeight: 1.5,
+              resize: 'none',
+              minHeight: '100px',
+              padding: 0,
+              margin: 0,
+            }}
+          />
+        ) : (
+          <Typography
+            sx={{
+              fontFamily: 'var(--font-geist-mono)',
+              color: mode === 'light' ? '#000032' : '#fff',
+              fontSize: 'clamp(14px, 2vw, 24px)',
+              lineHeight: 1.5,
+              wordBreak: 'break-all',
+              whiteSpace: 'pre-wrap',
+              pr: 1,
               userSelect: 'none',
-              fontSize: '2rem',
             }}
           >
             {password}
           </Typography>
-          <IconButton
-            onClick={() => setIsEditing(true)}
-            sx={{
-              ml: 2,
-              color: mode === 'light' ? 'rgba(0, 0, 0, 0.54)' : 'rgba(255, 255, 255, 0.7)'
-            }}
-          >
-            <Edit />
-          </IconButton>
-        </Box>
-      )}
+        )}
+      </Box>
+      <IconButton
+        onClick={() => isEditing ? handleSave() : setIsEditing(true)}
+        size="small"
+        sx={{
+          color: mode === 'light' ? 'rgba(0, 0, 0, 0.54)' : 'rgba(255, 255, 255, 0.7)',
+          flexShrink: 0,
+          alignSelf: 'flex-start',
+          mt: 0.5,
+          backgroundColor: isEditing ? 'rgba(25, 118, 210, 0.08)' : 'transparent',
+          '&:hover': {
+            backgroundColor: isEditing 
+              ? 'rgba(25, 118, 210, 0.12)' 
+              : mode === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.08)',
+          },
+        }}
+      >
+        <Edit fontSize="small" />
+      </IconButton>
     </Box>
   );
 }
