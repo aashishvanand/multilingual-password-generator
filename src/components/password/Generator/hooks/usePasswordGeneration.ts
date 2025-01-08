@@ -72,6 +72,7 @@ export function usePasswordGeneration() {
     const [wordCount, setWordCount] = useState(DEFAULT_WORD_COUNT)
     const [type, setType] = useState<'password' | 'passphrase'>('password')
     const [copied, setCopied] = useState(false)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isCompromised, setIsCompromised] = useState(false)
     const [length, setLength] = useState(DEFAULT_PASSWORD_LENGTH)
     const [hasError, setHasError] = useState(false)
