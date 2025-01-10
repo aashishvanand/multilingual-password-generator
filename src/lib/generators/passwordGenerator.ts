@@ -71,6 +71,23 @@ export class PasswordGenerator {
     italian: 'abcdefghijklmnopqrstuvwxyzàèéìòù',
     iranianPersian: 'ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی',
     javanese: 'ꦲꦏꦐꦑꦒꦕꦖꦗꦘꦙꦚꦛꦜꦝꦞꦟꦠꦡꦢꦣꦤꦥꦦꦧꦨꦩꦪꦫꦬꦭꦮꦯꦰꦱꦲ',
+    german: 'abcdefghijklmnopqrstuvwxyzäöüß',
+    arabic: 'ابتثجحخدذرزسشصضطظعغفقكلمنهوي',
+    portuguese: 'abcdefghijklmnopqrstuvwxyzáâãàçéêíóôõúü',
+    bulgarian: 'абвгдежзийклмнопрстуфхцчшщъьюя', // Cyrillic alphabet
+    czech: 'áčďéěíňóřšťúůýžĎŇŘŠŤŽ', // Unique Czech diacritics
+    croatian: 'čćđšžČĆĐŠŽ', // Unique Croatian characters
+    latvian: 'āčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ', // Latvian specific characters
+    romanian: 'ăâîșțĂÂÎȘȚ', // Romanian specific characters
+    slovenian: 'čšžČŠŽ', // Slovenian specific characters
+    welsh: 'âêîôûŵŷÂÊÎÔÛŴŶ', // Welsh specific characters
+    dutch: 'áàäéèëíìïóòöúùüĳÁÀÄÉÈËÍÌÏÓÒÖÚÙÜĲ', // Dutch specific characters
+    swedish: 'åäöÅÄÖ', // Swedish specific characters
+    danish: 'æøåÆØÅ', // Danish specific characters
+    hungarian: 'áéíóöőúüűÁÉÍÓÖŐÚÜŰ', // Hungarian specific characters
+    lithuanian: 'ąčęėįšųūžĄČĘĖĮŠŲŪŽ', // Lithuanian specific characters
+    maltese: 'ċġħżĊĠĦŻ', // Maltese specific characters
+    estonian: 'äõöüšžÄÕÖÜŠŽ', // Estonian specific characters
 
   }
 
@@ -81,77 +98,29 @@ export class PasswordGenerator {
    * @returns Generated password string
    */
 
-  public generate(length: number, options: {
-    uppercase: boolean
-    lowercase: boolean
-    numbers: boolean
-    symbols: boolean
-    hindi?: boolean
-    tamil?: boolean
-    telugu?: boolean
-    bengali?: boolean
-    gujarati?: boolean
-    kannada?: boolean
-    malayalam?: boolean
-    odia?: boolean
-    punjabi?: boolean
-    urdu?: boolean
-    santali?: boolean
-    manipuri?: boolean
-    mandarin?: boolean
-    spanish?: boolean
-    russian?: boolean
-    japanese?: boolean
-    vietnamese?: boolean
-    turkish?: boolean
-    korean?: boolean
-    french?: boolean
-    italian?: boolean
-    iranianPersian?: boolean
-    javanese?: boolean
-    [key: string]: boolean | undefined
-  }): string {
+  public generate(length: number, options: {[key: string]: boolean}): string {
     let chars = ''
-
-    // Add selected character sets to the pool
     Object.keys(options).forEach(option => {
       if (options[option] && this.alphabets[option]) {
         chars += this.alphabets[option]
       }
     })
-
-    // Default to lowercase if no character set is selected
-    if (!chars) {
-      chars = this.alphabets.lowercase
-    }
-
-    // Generate password using the character pool
-    let generatedPassword = ''
+    if (!chars) chars = this.alphabets.lowercase
+    let password = ''
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * chars.length)
-      generatedPassword += chars[randomIndex]
+      password += chars[randomIndex]
     }
-
-    return generatedPassword
+    return password
   }
 
-  /**
-   * Adds a new language character set to the generator
-   * @param name - Name identifier for the character set
-   * @param characters - String of characters to include
-   */
   public addLanguage(name: string, characters: string) {
     this.alphabets[name] = characters
   }
 
-  /**
-   * Returns list of available character sets
-   * @returns Array of character set names
-   */
   public getAvailableCharacterSets(): string[] {
     return Object.keys(this.alphabets)
   }
 }
 
-// Create and export singleton instance
 export const passwordGenerator = new PasswordGenerator()

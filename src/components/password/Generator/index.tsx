@@ -11,6 +11,7 @@ import { ControlButtons } from '../PasswordDisplay/ControlButtons'
 import { useTheme } from '@/components/ui/theme/hooks/useTheme'
 import { ErrorBoundary } from './ErrorBoundary'
 import ThemeToggle from './ThemeToggle'
+import PlatformCompatibility from './PlatformCompatibility'
 
 /**
  * Main Password Generator component that orchestrates the password generation UI
@@ -141,6 +142,9 @@ export function PasswordGenerator() {
             onOptionsChange={handleOptionsChange}
             mode={mode}
           />
+
+          {/* Platform Compatibility */}
+          <PlatformCompatibility mode={mode} />
         </Paper>
       </Container>
     </Box>
@@ -172,7 +176,7 @@ export function PasswordGenerator() {
           <Box sx={{
             mb: 3,
             display: 'flex',
-            flexDirection: 'row', // Changed to row
+            flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
@@ -187,7 +191,6 @@ export function PasswordGenerator() {
               </span>
             </Typography>
           </Box>
-
 
           {/* Password Display */}
           <Paper
@@ -229,6 +232,9 @@ export function PasswordGenerator() {
             onOptionsChange={handleOptionsChange}
             mode={mode}
           />
+
+          {/* Platform Compatibility */}
+          <PlatformCompatibility mode={mode} />
         </Paper>
       </Container>
     </Box>

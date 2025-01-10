@@ -25,6 +25,20 @@ export interface PasswordOptions {
 
   // International Scripts
   english: boolean
+  dutch: boolean
+  swedish: boolean
+  danish: boolean
+  hungarian: boolean
+  lithuanian: boolean
+  maltese: boolean
+  estonian: boolean
+  bulgarian: boolean
+  czech: boolean
+  croatian: boolean
+  latvian: boolean
+  romanian: boolean
+  slovenian: boolean
+  welsh: boolean
   mandarin: boolean
   spanish: boolean
   russian: boolean

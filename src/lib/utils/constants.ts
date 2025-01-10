@@ -41,16 +41,27 @@ export const SUPPORTED_LANGUAGES = {
   ],
   INTERNATIONAL: [
     { code: 'english', label: 'English', script: 'Latin' },
+    { code: 'dutch', label: 'Dutch', script: 'Nederlands' },
+    { code: 'swedish', label: 'Swedish', script: 'Svenska' },
+    { code: 'danish', label: 'Danish', script: 'Dansk' },
+    { code: 'hungarian', label: 'Hungarian', script: 'Magyar' },
+    { code: 'lithuanian', label: 'Lithuanian', script: 'Lietuvių' },
+    { code: 'maltese', label: 'Maltese', script: 'Malti' },
+    { code: 'estonian', label: 'Estonian', script: 'Eesti' },
+    { code: 'bulgarian', label: 'Bulgarian', script: 'български' },
+    { code: 'czech', label: 'Czech', script: 'Čeština' },
+    { code: 'croatian', label: 'Croatian', script: 'Hrvatski' },
+    { code: 'latvian', label: 'Latvian', script: 'Latviešu' },
+    { code: 'romanian', label: 'Romanian', script: 'Română' },
+    { code: 'slovenian', label: 'Slovenian', script: 'Slovenščina' },
+    { code: 'welsh', label: 'Welsh', script: 'Cymraeg' },
     { code: 'mandarin', label: 'Mandarin', script: '中文' },
-    { code: 'spanish', label: 'Spanish', script: 'Español' },
     { code: 'russian', label: 'Russian', script: 'Русский' },
     { code: 'japanese', label: 'Japanese', script: '日本語' },
     { code: 'vietnamese', label: 'Vietnamese', script: 'Tiếng Việt' },
     { code: 'turkish', label: 'Turkish', script: 'Türkçe' },
     { code: 'korean', label: 'Korean', script: '한국어' },
-    { code: 'french', label: 'French', script: 'Français' },
-    { code: 'italian', label: 'Italian', script: 'Italiano' },
     { code: 'iranianPersian', label: 'Iranian Persian', script: 'فارسی' },
     { code: 'javanese', label: 'Javanese', script: 'ꦧꦱꦗꦮ' }
   ]
-} as const
+} as const;

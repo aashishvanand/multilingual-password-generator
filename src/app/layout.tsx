@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import CssBaseline from '@mui/material/CssBaseline';
+import FaviconHead from '@/components/FaviconHead'
+import { siteMetadata } from '@/lib/seo/metadata';
 
 /**
  * Root layout component that wraps the entire application
@@ -22,8 +24,21 @@ const geistMono = Geist_Mono({
 
 // Metadata for SEO and document head
 export const metadata: Metadata = {
-  title: "Password Generator",
-  description: "Secure multilingual password generator",
+  metadataBase: new URL('https://your-domain.com'),
+  title: {
+    default: siteMetadata.title,
+    template: '%s | Multilingual Password Generator'
+  },
+  description: siteMetadata.description,
+  keywords: siteMetadata.keywords,
+  authors: [{ name: 'Aashish Vivekanand' }],
+  creator: 'Aashish Vivekanand',
+  publisher: 'Aashish Vivekanand',
+  openGraph: {
+    ...siteMetadata.openGraph,
+    images: siteMetadata.openGraph.images,
+  },
+  twitter: siteMetadata.twitter,
 };
 
 export default function RootLayout({
@@ -35,6 +50,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <FaviconHead />
       </head>
       <body 
         className={`${geistSans.variable} ${geistMono.variable}`}
