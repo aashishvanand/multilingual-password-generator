@@ -5,43 +5,14 @@ import { checkPasswordCompromised } from '@/lib/security/checkPassword'
 import type { PasswordOptions } from '@/types'
 import { DEFAULT_PASSWORD_LENGTH, DEFAULT_WORD_COUNT } from '@/lib/utils/constants'
 
-const DEFAULT_PASSWORD_OPTIONS: PasswordOptions = {
-    uppercase: true,
-    lowercase: true,
-    numbers: true,
-    symbols: false,
-    english: true,
-    hindi: false,
-    tamil: false,
-    telugu: false,
-    bengali: false,
-    gujarati: false,
-    kannada: false,
-    malayalam: false,
-    odia: false,
-    punjabi: false,
-    urdu: false,
-    santali: false,
-    manipuri: false,
-    mandarin: false,
-    spanish: false,
-    russian: false,
-    japanese: false,
-    vietnamese: false,
-    turkish: false,
-    korean: false,
-    french: false,
-    italian: false,
-    iranianPersian: false,
-    javanese: false,
-}
-
 const DEFAULT_PASSPHRASE_OPTIONS: PasswordOptions = {
+    // Character sets
     uppercase: false,
     lowercase: false,
     numbers: false,
     symbols: false,
-    english: true,
+
+    // Indian Scripts
     hindi: false,
     tamil: false,
     telugu: false,
@@ -54,6 +25,23 @@ const DEFAULT_PASSPHRASE_OPTIONS: PasswordOptions = {
     urdu: false,
     santali: false,
     manipuri: false,
+
+    // International Scripts
+    english: true,
+    dutch: false,
+    swedish: false,
+    danish: false,
+    hungarian: false,
+    lithuanian: false,
+    maltese: false,
+    estonian: false,
+    bulgarian: false,
+    czech: false,
+    croatian: false,
+    latvian: false,
+    romanian: false,
+    slovenian: false,
+    welsh: false,
     mandarin: false,
     spanish: false,
     russian: false,
@@ -64,7 +52,58 @@ const DEFAULT_PASSPHRASE_OPTIONS: PasswordOptions = {
     french: false,
     italian: false,
     iranianPersian: false,
-    javanese: false,
+    javanese: false
+}
+
+// You should also update DEFAULT_PASSWORD_OPTIONS similarly:
+const DEFAULT_PASSWORD_OPTIONS: PasswordOptions = {
+    // Character sets
+    uppercase: true,
+    lowercase: true,
+    numbers: true,
+    symbols: false,
+
+    // Indian Scripts
+    hindi: false,
+    tamil: false,
+    telugu: false,
+    bengali: false,
+    gujarati: false,
+    kannada: false,
+    malayalam: false,
+    odia: false,
+    punjabi: false,
+    urdu: false,
+    santali: false,
+    manipuri: false,
+
+    // International Scripts
+    english: true,
+    dutch: false,
+    swedish: false,
+    danish: false,
+    hungarian: false,
+    lithuanian: false,
+    maltese: false,
+    estonian: false,
+    bulgarian: false,
+    czech: false,
+    croatian: false,
+    latvian: false,
+    romanian: false,
+    slovenian: false,
+    welsh: false,
+    mandarin: false,
+    spanish: false,
+    russian: false,
+    japanese: false,
+    vietnamese: false,
+    turkish: false,
+    korean: false,
+    french: false,
+    italian: false,
+    iranianPersian: false,
+    javanese: false
 }
 
 export function usePasswordGeneration() {
