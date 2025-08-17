@@ -1,13 +1,14 @@
 'use client'
 
-import React from 'react';
-import { Box, Paper, Container, Typography, useMediaQuery, Skeleton, Snackbar, Alert } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Paper, Container, useMediaQuery, Skeleton, Snackbar, Alert } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles'
 import { usePasswordGeneration } from './hooks/usePasswordGeneration'
 import { usePasswordStrength } from '@/lib/security/passwordStrength'
 import { PasswordDisplay } from '../PasswordDisplay'
 import { OptionsPanel } from './OptionsPanel'
 import { ControlButtons } from '../PasswordDisplay/ControlButtons'
+import { PasswordAnalysis } from '../PasswordAnalysis' // Import the new component
 import { useTheme } from '@/components/ui/theme/hooks/useTheme'
 import { ErrorBoundary } from './ErrorBoundary'
 import ThemeToggle from './ThemeToggle'
@@ -21,6 +22,7 @@ import PlatformCompatibility from './PlatformCompatibility'
 export function PasswordGenerator() {
   const { theme, mode, toggleTheme } = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [showAnalysis, setShowAnalysis] = useState(false); // State for analysis visibility
 
   const {
     password,
@@ -33,6 +35,7 @@ export function PasswordGenerator() {
     options,
     isClient,
     snackbarOpen,
+    isCompromised,
     setPassword,
     setWordCount,
     setLength,
@@ -45,6 +48,11 @@ export function PasswordGenerator() {
   } = usePasswordGeneration();
 
   const strengthResult = usePasswordStrength(password);
+  
+  const handleAnalyze = () => {
+    setShowAnalysis(!showAnalysis);
+  };
+
 
   if (!isClient) {
     return (
@@ -89,19 +97,6 @@ export function PasswordGenerator() {
             color: mode === 'light' ? 'text.primary' : 'white',
           }}
         >
-          {/* Password strength indicator */}
-          <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between' }}>
-            <Typography sx={{ color: mode === 'light' ? 'text.secondary' : 'rgba(255,255,255,0.7)' }}>
-              Your password&apos;s score: <span style={{ color: '#1976d2', fontWeight: 500 }}>
-                {['Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'][strengthResult.score]}
-              </span>
-            </Typography>
-            <Typography sx={{ color: mode === 'light' ? 'text.secondary' : 'rgba(255,255,255,0.7)' }}>
-              Estimated time to crack: <span style={{ color: '#1976d2', fontWeight: 500 }}>
-                {strengthResult.crackTimesDisplay.offlineSlowHashing1e4PerSecond}
-              </span>
-            </Typography>
-          </Box>
 
           {/* Password display area */}
           <Paper
@@ -129,8 +124,12 @@ export function PasswordGenerator() {
             copied={copied}
             onCopy={handleCopy}
             onGenerate={generatePassword}
+            onAnalyze={handleAnalyze}
             mode={mode}
           />
+          
+          {showAnalysis && <PasswordAnalysis password={password} strength={strengthResult} isCompromised={isCompromised} mode={mode} />}
+
 
           <OptionsPanel
             type={type}
@@ -174,26 +173,6 @@ export function PasswordGenerator() {
             bgcolor: mode === 'light' ? 'white' : '#121212',
           }}
         >
-          {/* Strength Indicator */}
-          <Box sx={{
-            mb: 3,
-            display: 'flex',
-            flexDirection: 'column', // Changed from 'row'
-            alignItems: 'flex-start',   // Changed from 'center'
-            gap: 1, // Added for spacing
-          }}>
-            <Typography variant="body2" color="text.secondary">
-              Score: <span style={{ color: '#1976d2', fontWeight: 500 }}>
-                {['Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'][strengthResult.score]}
-              </span>
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Time to crack: <span style={{ color: '#1976d2', fontWeight: 500 }}>
-                {strengthResult.crackTimesDisplay.offlineSlowHashing1e4PerSecond}
-              </span>
-            </Typography>
-          </Box>
-
           {/* Password Display */}
           <Paper
             elevation={0}
@@ -218,9 +197,13 @@ export function PasswordGenerator() {
               copied={copied}
               onCopy={handleCopy}
               onGenerate={generatePassword}
+              onAnalyze={handleAnalyze}
               mode={mode}
             />
           </Box>
+          
+          {showAnalysis && <PasswordAnalysis password={password} strength={strengthResult} isCompromised={isCompromised} mode={mode} />}
+
 
           <OptionsPanel
             type={type}

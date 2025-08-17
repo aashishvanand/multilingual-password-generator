@@ -110,12 +110,13 @@ const DEFAULT_PASSWORD_OPTIONS: PasswordOptions = {
     thai: false
 }
 
+type PassphraseLanguage = 'english' | 'hindi' | 'tamil' | 'telugu';
+
 export function usePasswordGeneration() {
     const [password, setPassword] = useState('')
     const [wordCount, setWordCount] = useState(DEFAULT_WORD_COUNT)
     const [type, setType] = useState<'password' | 'passphrase'>('password')
     const [copied, setCopied] = useState(false)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isCompromised, setIsCompromised] = useState(false)
     const [length, setLength] = useState(DEFAULT_PASSWORD_LENGTH)
     const [hasError, setHasError] = useState(false)
@@ -125,6 +126,16 @@ export function usePasswordGeneration() {
     const [isDragging, setIsDragging] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false)
 
+    const checkPasswordStrength = useCallback(async (pass: string) => {
+        try {
+            const compromised = await checkPasswordCompromised(pass);
+            setIsCompromised(compromised);
+        } catch (error) {
+            console.error('Error checking password:', error);
+            setIsCompromised(false); // Default to not compromised on error
+        }
+    }, []);
+
     const generateRandomPassword = useCallback(() => {
         return passwordGenerator.generate(length, options)
     }, [length, options])
@@ -132,7 +143,7 @@ export function usePasswordGeneration() {
     const generatePassphrase = useCallback(() => {
         const selectedLanguages = Object.entries(options)
             .filter(([, enabled]) => enabled)
-            .map(([lang]) => lang)
+            .map(([lang]) => lang as PassphraseLanguage)
 
         if (selectedLanguages.length === 0) {
             selectedLanguages.push('english')
@@ -151,7 +162,7 @@ export function usePasswordGeneration() {
         const randomNum = Math.floor(Math.random() * 900) + 100
         return `${words.join('-')}${randomNum}`
     }, [options, wordCount])
-
+    
     const generatePassword = useCallback(() => {
         if (!isClient) return
 
@@ -161,17 +172,8 @@ export function usePasswordGeneration() {
 
         setPassword(newPassword)
         checkPasswordStrength(newPassword)
-    }, [type, generatePassphrase, generateRandomPassword, isClient])
+    }, [type, generatePassphrase, generateRandomPassword, isClient, checkPasswordStrength])
 
-    const checkPasswordStrength = async (pass: string) => {
-        try {
-            const compromised = await checkPasswordCompromised(pass)
-            setIsCompromised(compromised)
-        } catch (error) {
-            console.error('Error checking password:', error)
-            setIsCompromised(false)
-        }
-    }
 
     const handleLengthChange = (newValue: number) => {
         setLength(newValue)
@@ -240,6 +242,7 @@ export function usePasswordGeneration() {
         isEditing,
         isClient,
         options,
+        isCompromised,
         snackbarOpen,
         setSnackbarOpen,
         setPassword,
@@ -265,7 +268,7 @@ export function usePasswordGeneration() {
             event: React.ChangeEvent<HTMLInputElement>
         ) => {
             const newValue = event.target.checked;
-            let updatedOptions = { ...options, [optionName]: newValue };
+            const updatedOptions = { ...options, [optionName]: newValue };
 
             if (type === 'password') {
                 const isLatinCharset = optionName === 'uppercase' || optionName === 'lowercase';
