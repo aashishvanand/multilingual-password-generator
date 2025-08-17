@@ -9,21 +9,18 @@ import { getZxcvbnManager, createPasswordAnalyzer } from './zxcvbnManager'
 
 /**
  * Password Strength Analysis Implementation
- * 
- * Scoring Algorithm:
+ * * Scoring Algorithm:
  * - Score 0: Too guessable (< 10^3 guesses)
  * - Score 1: Very guessable (< 10^6 guesses)
  * - Score 2: Somewhat guessable (< 10^8 guesses)
  * - Score 3: Safely unguessable (< 10^10 guesses)
  * - Score 4: Very unguessable (≥ 10^10 guesses)
- * 
- * Security Implications:
+ * * Security Implications:
  * - Provides estimate of password cracking difficulty
  * - Identifies common patterns and weaknesses
  * - Calculates entropy based on character composition
  * - Now properly includes user context in analysis
- * 
- * @security Password strength is an estimate and should not be solely relied upon
+ * * @security Password strength is an estimate and should not be solely relied upon
  * @warning Local analysis only - no passwords are transmitted
  */
 
@@ -178,29 +175,25 @@ export const getPasswordScore = (
  */
 export const isValidStrengthResult = (result: unknown): result is StrengthResult => {
     if (!result || typeof result !== 'object') {
-        return false
+        return false;
     }
-    
-    const r = result as Record<string, unknown>
-    
+
+    const r = result as Record<string, unknown>;
+
     return (
-        'score' in r &&
         typeof r.score === 'number' &&
         r.score >= 0 &&
         r.score <= 4 &&
-        'guessesLog10' in r &&
         typeof r.guessesLog10 === 'number' &&
-        'crackTimesDisplay' in r &&
-        r.crackTimesDisplay &&
         typeof r.crackTimesDisplay === 'object' &&
-        'feedback' in r &&
-        r.feedback &&
+        r.crackTimesDisplay !== null &&
         typeof r.feedback === 'object' &&
         r.feedback !== null &&
-        'suggestions' in (r.feedback as Record<string, unknown>) &&
+        'suggestions' in r.feedback &&
         Array.isArray((r.feedback as Record<string, unknown>).suggestions)
-    )
-}
+    );
+};
+
 
 /**
  * Utility function to get strength description from score
