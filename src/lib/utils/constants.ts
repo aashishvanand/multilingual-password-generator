@@ -62,6 +62,10 @@ export const SUPPORTED_LANGUAGES = {
     { code: 'turkish', label: 'Turkish', script: 'Türkçe' },
     { code: 'korean', label: 'Korean', script: '한국어' },
     { code: 'iranianPersian', label: 'Iranian Persian', script: 'فارسی' },
-    { code: 'javanese', label: 'Javanese', script: 'ꦧꦱꦗꦮ' }
+    { code: 'javanese', label: 'Javanese', script: 'ꦧꦱꦗꦮ' },
+    { code: 'greek', label: 'Greek', script: 'Ελληνικά' },
+    { code: 'thai', label: 'Thai', script: 'ไทย' },
+    { code: 'french', label: 'French', script: 'Français' },
+    { code: 'italian', label: 'Italian', script: 'Italiano' }
   ]
 } as const;

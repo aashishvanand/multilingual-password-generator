@@ -88,6 +88,8 @@ export class PasswordGenerator {
     lithuanian: 'ąčęėįšųūžĄČĘĖĮŠŲŪŽ', // Lithuanian specific characters
     maltese: 'ċġħżĊĠĦŻ', // Maltese specific characters
     estonian: 'äõöüšžÄÕÖÜŠŽ', // Estonian specific characters
+    greek: 'αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+    thai: 'กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ'
 
   }
 

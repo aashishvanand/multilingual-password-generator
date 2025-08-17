@@ -52,7 +52,9 @@ const DEFAULT_PASSPHRASE_OPTIONS: PasswordOptions = {
     french: false,
     italian: false,
     iranianPersian: false,
-    javanese: false
+    javanese: false,
+    greek: false,
+    thai: false
 }
 
 // You should also update DEFAULT_PASSWORD_OPTIONS similarly:
@@ -103,7 +105,9 @@ const DEFAULT_PASSWORD_OPTIONS: PasswordOptions = {
     french: false,
     italian: false,
     iranianPersian: false,
-    javanese: false
+    javanese: false,
+    greek: false,
+    thai: false
 }
 
 export function usePasswordGeneration() {

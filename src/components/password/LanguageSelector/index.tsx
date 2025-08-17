@@ -91,6 +91,7 @@ export default function LanguageSelector({ options, onChange, type, mode }: Lang
                             { key: 'english', label: 'English' },
                             { key: 'estonian', label: 'Estonian' },
                             { key: 'french', label: 'French' },
+                            { key: 'greek', label: 'Greek' },
                             { key: 'hungarian', label: 'Hungarian' },
                             { key: 'iranianPersian', label: 'Iranian Persian' },
                             { key: 'italian', label: 'Italian' },
@@ -106,6 +107,7 @@ export default function LanguageSelector({ options, onChange, type, mode }: Lang
                             { key: 'slovenian', label: 'Slovenian' },
                             { key: 'spanish', label: 'Spanish' },
                             { key: 'swedish', label: 'Swedish' },
+                            { key: 'thai', label: 'Thai' },
                             { key: 'turkish', label: 'Turkish' },
                             { key: 'vietnamese', label: 'Vietnamese' },
                             { key: 'welsh', label: 'Welsh' }

@@ -50,6 +50,8 @@ export interface PasswordOptions {
   italian: boolean
   iranianPersian: boolean
   javanese: boolean
+  greek: boolean,
+  thai: boolean
 
   [key: string]: boolean
 }
