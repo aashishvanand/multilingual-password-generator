@@ -197,6 +197,12 @@ export function usePasswordGeneration() {
     }, [])
 
     useEffect(() => {
+    if (password) {
+        checkPasswordStrength(password);
+    }
+}, [password, checkPasswordStrength]);
+
+    useEffect(() => {
         if (isClient) {
             generatePassword()
         }

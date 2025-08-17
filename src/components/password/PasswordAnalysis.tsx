@@ -24,7 +24,8 @@ const InfoTooltip = ({ title }: { title: string }) => (
 );
 
 export const PasswordAnalysis = ({ password, strength, isCompromised, mode }: PasswordAnalysisProps) => {
-    const score = strength.score;
+    // If the password is compromised, override the score to be 0 (the weakest).
+    const score = isCompromised ? 0 : strength.score;
 
     return (
         <Paper
