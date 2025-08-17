@@ -136,6 +136,12 @@ export function usePasswordGeneration() {
         }
     }, []);
 
+    useEffect(() => {
+        if (password) {
+            checkPasswordStrength(password);
+        }
+    }, [password, checkPasswordStrength]);
+
     const generateRandomPassword = useCallback(() => {
         return passwordGenerator.generate(length, options)
     }, [length, options])
@@ -197,12 +203,6 @@ export function usePasswordGeneration() {
     }, [])
 
     useEffect(() => {
-    if (password) {
-        checkPasswordStrength(password);
-    }
-}, [password, checkPasswordStrength]);
-
-    useEffect(() => {
         if (isClient) {
             generatePassword()
         }
@@ -217,7 +217,7 @@ export function usePasswordGeneration() {
             } else { // passphrase
                 const passphraseLanguages = SUPPORTED_LANGUAGES.PASSPHRASE.map(lang => lang.code);
                 hasAnyOption = Object.entries(options)
-                    .filter(([key]) => passphraseLanguages.includes(key)) 
+                    .filter(([key]) => (passphraseLanguages as readonly string[]).includes(key)) 
                     .some(([, value]) => value === true);
             }
 
