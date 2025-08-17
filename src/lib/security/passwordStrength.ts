@@ -23,18 +23,6 @@ import { getZxcvbnManager, createPasswordAnalyzer } from './zxcvbnManager'
  * - Calculates entropy based on character composition
  * - Now properly includes user context in analysis
  * 
- * Example Usage:
- * ```typescript
- * // Basic usage
- * const strength = usePasswordStrength('myPassword123');
- * 
- * // With user context (properly implemented now)
- * const strength = usePasswordStrength('johnDoe123', ['john', 'doe', 'company']);
- * 
- * // With multi-language support
- * const strength = usePasswordStrength('password123', ['user'], ['en', 'common']);
- * ```
- * 
  * @security Password strength is an estimate and should not be solely relied upon
  * @warning Local analysis only - no passwords are transmitted
  */

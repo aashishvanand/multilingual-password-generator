@@ -3,7 +3,7 @@ import { passwordGenerator } from '@/lib/generators/passwordGenerator'
 import { wordGenerator } from '@/lib/generators/wordGenerator'
 import { checkPasswordCompromised } from '@/lib/security/checkPassword'
 import type { PasswordOptions } from '@/types'
-import { DEFAULT_PASSWORD_LENGTH, DEFAULT_WORD_COUNT } from '@/lib/utils/constants'
+import { DEFAULT_PASSWORD_LENGTH, DEFAULT_WORD_COUNT, SUPPORTED_LANGUAGES } from '@/lib/utils/constants'
 
 const DEFAULT_PASSPHRASE_OPTIONS: PasswordOptions = {
     // Character sets
@@ -202,19 +202,26 @@ export function usePasswordGeneration() {
 
     useEffect(() => {
         if (!isDragging) {
-            const hasAnyOption = type === 'password'
-                ? (options.uppercase || options.lowercase || options.numbers || options.symbols)
-                : (options.english || options.hindi || options.tamil || options.telugu)
-
-            if (!hasAnyOption) {
-                setHasError(true)
-                return
+            let hasAnyOption = false;
+            if (type === 'password') {
+                // Check if at least one option is enabled
+                hasAnyOption = Object.values(options).some(value => value === true);
+            } else { // passphrase
+                const passphraseLanguages = SUPPORTED_LANGUAGES.PASSPHRASE.map(lang => lang.code);
+                hasAnyOption = Object.entries(options)
+                    .filter(([key]) => passphraseLanguages.includes(key)) 
+                    .some(([, value]) => value === true);
             }
 
-            setHasError(false)
-            generatePassword()
+            if (!hasAnyOption) {
+                setHasError(true);
+                return;
+            }
+
+            setHasError(false);
+            generatePassword();
         }
-    }, [type, length, wordCount, options, generatePassword, isDragging])
+    }, [type, length, wordCount, options, generatePassword, isDragging]);
 
     const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -257,28 +264,35 @@ export function usePasswordGeneration() {
         handleOptionsChange: (optionName: string) => (
             event: React.ChangeEvent<HTMLInputElement>
         ) => {
-            const newValue = event.target.checked
-            const updatedOptions = { ...options, [optionName]: newValue }
+            const newValue = event.target.checked;
+            let updatedOptions = { ...options, [optionName]: newValue };
 
             if (type === 'password') {
-                if (optionName === 'uppercase' || optionName === 'lowercase') {
-                    if (newValue ||
-                        (optionName === 'uppercase' && options.lowercase) ||
-                        (optionName === 'lowercase' && options.uppercase)) {
-                        updatedOptions.english = true
-                    } else if (!newValue &&
-                        !(optionName === 'uppercase' ? options.lowercase : options.uppercase)) {
-                        updatedOptions.english = false
-                    }
-                }
+                const isLatinCharset = optionName === 'uppercase' || optionName === 'lowercase';
+                const isNonLatinScript = !['uppercase', 'lowercase', 'numbers', 'symbols', 'english'].includes(optionName);
 
-                if (optionName === 'english' && (options.uppercase || options.lowercase)) {
-                    updatedOptions.english = true
-                    return
+                if (optionName === 'english') {
+                    updatedOptions.uppercase = newValue;
+                    updatedOptions.lowercase = newValue;
+                } else if (isLatinCharset && newValue) {
+                    updatedOptions.english = true;
+                } else if (!updatedOptions.uppercase && !updatedOptions.lowercase) {
+                    updatedOptions.english = false;
+                }
+                
+                if ((isLatinCharset || optionName === 'english') && newValue) {
+                    Object.keys(updatedOptions).forEach(key => {
+                        if (!['uppercase', 'lowercase', 'numbers', 'symbols', 'english'].includes(key)) {
+                            updatedOptions[key] = false;
+                        }
+                    });
+                } else if (isNonLatinScript && newValue) {
+                    updatedOptions.english = false;
+                    updatedOptions.uppercase = false;
+                    updatedOptions.lowercase = false;
                 }
             }
-
-            setOptions(updatedOptions)
+            setOptions(updatedOptions);
         },
         generatePassword
     }
