@@ -11,30 +11,26 @@ type CharacterSets = {
 
 /**
  * Password Generator Implementation
- * 
- * Security Considerations:
- * - Uses cryptographically secure random number generation via Math.random()
+ * * Security Considerations:
+ * - Uses cryptographically secure random number generation via crypto.getRandomValues()
  * - Implements entropy pooling for enhanced randomness
  * - Avoids predictable patterns in generated passwords
  * - Supports multiple character sets to increase entropy
- * 
- * Entropy Sources:
+ * * Entropy Sources:
  * - Character set selection
  * - Random number generation
  * - Multiple language support
- * 
- * Usage Example:
+ * * Usage Example:
  * ```typescript
  * const generator = new PasswordGenerator();
  * const password = generator.generate(16, {
- *   uppercase: true,
- *   lowercase: true,
- *   numbers: true,
- *   symbols: true
+ * uppercase: true,
+ * lowercase: true,
+ * numbers: true,
+ * symbols: true
  * });
  * ```
- * 
- * @security This implementation should be regularly audited for cryptographic security
+ * * @security This implementation should be regularly audited for cryptographic security
  * @warning Do not modify the random number generation without security review
  */
 
@@ -94,6 +90,17 @@ export class PasswordGenerator {
   }
 
   /**
+   * Generates a cryptographically secure random number.
+   * @param max - The maximum value (exclusive).
+   * @returns A random number between 0 and max.
+   */
+  private getRandomNumber(max: number): number {
+    const randomValues = new Uint32Array(1);
+    crypto.getRandomValues(randomValues);
+    return randomValues[0] % max;
+  }
+
+  /**
    * Generates a password based on the specified options
    * @param length - The desired length of the password
    * @param options - Configuration options for character sets to include
@@ -110,7 +117,7 @@ export class PasswordGenerator {
     if (!chars) chars = this.alphabets.lowercase
     let password = ''
     for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * chars.length)
+      const randomIndex = this.getRandomNumber(chars.length)
       password += chars[randomIndex]
     }
     return password

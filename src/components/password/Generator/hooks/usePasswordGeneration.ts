@@ -123,6 +123,7 @@ export function usePasswordGeneration() {
     const [isClient, setIsClient] = useState(false)
     const [options, setOptions] = useState<PasswordOptions>(DEFAULT_PASSWORD_OPTIONS)
     const [isDragging, setIsDragging] = useState(false)
+    const [snackbarOpen, setSnackbarOpen] = useState(false)
 
     const generateRandomPassword = useCallback(() => {
         return passwordGenerator.generate(length, options)
@@ -215,6 +216,13 @@ export function usePasswordGeneration() {
         }
     }, [type, length, wordCount, options, generatePassword, isDragging])
 
+    const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
+
     return {
         password,
         wordCount,
@@ -225,6 +233,8 @@ export function usePasswordGeneration() {
         isEditing,
         isClient,
         options,
+        snackbarOpen,
+        setSnackbarOpen,
         setPassword,
         setWordCount,
         setLength: handleLengthChange,
@@ -234,8 +244,10 @@ export function usePasswordGeneration() {
         handleCopy: () => {
             navigator.clipboard.writeText(password)
             setCopied(true)
+            setSnackbarOpen(true);
             setTimeout(() => setCopied(false), 2000)
         },
+        handleSnackbarClose,
         handleTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => {
             const newType = event.target.value as 'password' | 'passphrase'
             setType(newType)

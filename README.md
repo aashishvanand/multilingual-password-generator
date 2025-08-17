@@ -41,33 +41,51 @@ A secure, feature-rich password generator supporting multiple languages and scri
 
 ## 🌍 Supported Languages
 
+Generate passwords and passphrases using characters from over 40 languages and scripts.
+
 ### Indian Scripts
-- Hindi (हिन्दी)
-- Tamil (தமிழ்)
-- Telugu (తెలుగు)
 - Bengali (বাংলা)
 - Gujarati (ગુજરાતી)
+- Hindi (हिन्दी)
 - Kannada (ಕನ್ನಡ)
 - Malayalam (മലയാളം)
+- Manipuri (মৈতৈলোন্)
 - Odia (ଓଡ଼ିଆ)
 - Punjabi (ਪੰਜਾਬੀ)
-- Urdu (اردو)
 - Santali (ᱥᱟᱱᱛᱟᱲᱤ)
-- Manipuri (মৈতৈলোন্)
+- Tamil (தமிழ்)
+- Telugu (తెలుగు)
+- Urdu (اردو)
 
 ### International Scripts
+- Bulgarian (български)
+- Croatian (Hrvatski)
+- Czech (Čeština)
+- Danish (Dansk)
+- Dutch (Nederlands)
 - English (Latin)
-- Mandarin (中文)
-- Spanish (Español)
-- Russian (Русский)
-- Japanese (日本語)
-- Vietnamese (Tiếng Việt)
-- Turkish (Türkçe)
-- Korean (한국어)
+- Estonian (Eesti)
 - French (Français)
-- Italian (Italiano)
+- Greek (Ελληνικά)
+- Hungarian (Magyar)
 - Iranian Persian (فارسی)
+- Italian (Italiano)
+- Japanese (日本語)
 - Javanese (ꦧꦱꦗꦮ)
+- Korean (한국어)
+- Latvian (Latviešu)
+- Lithuanian (Lietuvių)
+- Maltese (Malti)
+- Mandarin (中文)
+- Romanian (Română)
+- Russian (Русский)
+- Slovenian (Slovenščina)
+- Spanish (Español)
+- Swedish (Svenska)
+- Thai (ไทย)
+- Turkish (Türkçe)
+- Vietnamese (Tiếng Việt)
+- Welsh (Cymraeg)
 
 ## 📦 Installation
 
@@ -114,20 +132,21 @@ src/
 
 ## 🔒 Security Considerations
 
+This project prioritizes security at every level to ensure the passwords you generate are safe and robust.
+
 ### Password Generation
-- Uses cryptographically secure random number generation
-- Implements entropy pooling for enhanced randomness
-- Avoids predictable patterns in generated passwords
+-   **Cryptographically Secure Randomness**: Passwords are generated using a cryptographically secure pseudo-random number generator (CSPRNG) to ensure true randomness and unpredictability.
+-   **Entropy Pooling**: The generator combines multiple character sets and languages to increase the entropy (randomness) of each password, making them harder to guess.
+-   **No Predictable Patterns**: The generation logic is designed to avoid creating predictable sequences or patterns.
 
 ### Password Analysis
-- Real-time strength calculation using multiple factors
-- Pattern recognition for common vulnerabilities
-- Comprehensive crack time estimation
+-   **Real-time Strength Calculation**: Utilizes the powerful **zxcvbn-ts** library to provide instant feedback on password strength, identifying weaknesses and common patterns.
+-   **Comprehensive Crack Time Estimation**: Calculates how long it would take to crack your password under various attack scenarios.
+-   **User Context Analysis**: Intelligently checks for passwords that include common user-specific information (like names or dates) and their variations (e.g., l33t speak).
 
 ### API Security
-- K-anonymity for breach checking
-- Rate limiting on API requests
-- Secure HTTPS communication
+-   **K-Anonymity for Breach Checking**: When checking if a password has been compromised, it uses the **HaveIBeenPwned** API with a k-anonymity model. Only the first 5 characters of the password's hash are sent, ensuring your full password is never exposed.
+-   **Secure Communication**: All API communication is performed over secure HTTPS.
 
 ## 🧪 Development
 

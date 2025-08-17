@@ -43,8 +43,8 @@ export function OptionsPanel({
 
     // Length slider handlers
     const handleLengthChange = useCallback(
-        (_event: Event | React.SyntheticEvent<Element, Event>, 
-         newValue: number | number[]
+        (_event: Event | React.SyntheticEvent<Element, Event>,
+            newValue: number | number[]
         ) => {
             const value = Array.isArray(newValue) ? newValue[0] : newValue;
             setLocalLength(value);
@@ -54,8 +54,8 @@ export function OptionsPanel({
     );
 
     const handleLengthChangeCommitted = useCallback(
-        (_event: React.SyntheticEvent | Event, 
-         newValue: number | number[]
+        (_event: React.SyntheticEvent | Event,
+            newValue: number | number[]
         ) => {
             const value = Array.isArray(newValue) ? newValue[0] : newValue;
             isDraggingRef.current = false;
@@ -66,8 +66,8 @@ export function OptionsPanel({
 
     // Word count slider handlers
     const handleWordCountChange = useCallback(
-        (_event: Event | React.SyntheticEvent<Element, Event>, 
-         newValue: number | number[]
+        (_event: Event | React.SyntheticEvent<Element, Event>,
+            newValue: number | number[]
         ) => {
             const value = Array.isArray(newValue) ? newValue[0] : newValue;
             setLocalWordCount(value);
@@ -77,8 +77,8 @@ export function OptionsPanel({
     );
 
     const handleWordCountChangeCommitted = useCallback(
-        (_event: React.SyntheticEvent | Event, 
-         newValue: number | number[]
+        (_event: React.SyntheticEvent | Event,
+            newValue: number | number[]
         ) => {
             const value = Array.isArray(newValue) ? newValue[0] : newValue;
             isDraggingRef.current = false;
@@ -140,11 +140,10 @@ export function OptionsPanel({
                                             boxShadow: '0 2px 12px 0 rgba(0,0,0,0.4)',
                                         },
                                         '&:hover, &.Mui-focusVisible': {
-                                            boxShadow: `0px 0px 0px 8px ${
-                                                mode === 'dark' 
-                                                    ? 'rgba(255, 255, 255, 0.16)' 
+                                            boxShadow: `0px 0px 0px 8px ${mode === 'dark'
+                                                    ? 'rgba(255, 255, 255, 0.16)'
                                                     : 'rgba(0, 0, 0, 0.16)'
-                                            }`,
+                                                }`,
                                         },
                                     },
                                     '& .MuiSlider-track': {
@@ -188,11 +187,10 @@ export function OptionsPanel({
                                             boxShadow: '0 2px 12px 0 rgba(0,0,0,0.4)',
                                         },
                                         '&:hover, &.Mui-focusVisible': {
-                                            boxShadow: `0px 0px 0px 8px ${
-                                                mode === 'dark' 
-                                                    ? 'rgba(255, 255, 255, 0.16)' 
+                                            boxShadow: `0px 0px 0px 8px ${mode === 'dark'
+                                                    ? 'rgba(255, 255, 255, 0.16)'
                                                     : 'rgba(0, 0, 0, 0.16)'
-                                            }`,
+                                                }`,
                                         },
                                     },
                                     '& .MuiSlider-track': {

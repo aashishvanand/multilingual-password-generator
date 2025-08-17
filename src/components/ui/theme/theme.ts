@@ -1,5 +1,6 @@
 /**
- * Material-UI theme configuration
+ * Theme configuration for Material-UI
+ * Defines light and dark mode themes
  */
 import { createTheme } from '@mui/material'
 
@@ -15,6 +16,17 @@ export const theme = {
                 paper: '#fff',
             },
         },
+        typography: {
+            fontFamily: 'var(--font-geist-sans)',
+            body1: {
+                fontSize: '1rem',
+                lineHeight: 1.5,
+            },
+            h4: {
+                fontFamily: 'var(--font-geist-mono)',
+                fontWeight: 600,
+            },
+        },
         components: {
             MuiButton: {
                 styleOverrides: {
@@ -22,6 +34,7 @@ export const theme = {
                         borderRadius: '50px',
                         textTransform: 'none',
                         padding: '12px 24px',
+                        fontWeight: 500,
                     },
                 },
             },
@@ -45,6 +58,7 @@ export const theme = {
                 paper: '#121212',
             },
         },
+        // Inherit the same component styles as light theme
         components: {
             MuiButton: {
                 styleOverrides: {
@@ -52,6 +66,7 @@ export const theme = {
                         borderRadius: '50px',
                         textTransform: 'none',
                         padding: '12px 24px',
+                        fontWeight: 500,
                     },
                 },
             },

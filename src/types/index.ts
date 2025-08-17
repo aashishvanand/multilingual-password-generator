@@ -1,3 +1,19 @@
+import { SUPPORTED_LANGUAGES } from "@/lib/utils/constants";
+
+// Dynamically create a union type of all language codes from the constants
+type IndianLanguageCode = typeof SUPPORTED_LANGUAGES.INDIAN[number]['code'];
+type InternationalLanguageCode = typeof SUPPORTED_LANGUAGES.INTERNATIONAL[number]['code'];
+type PassphraseLanguageCode = typeof SUPPORTED_LANGUAGES.PASSPHRASE[number]['code'];
+
+export type LanguageCode = 
+    | 'uppercase' 
+    | 'lowercase' 
+    | 'numbers' 
+    | 'symbols' 
+    | IndianLanguageCode 
+    | InternationalLanguageCode
+    | PassphraseLanguageCode;
+
 /**
  * Type definitions for password generation options
  */

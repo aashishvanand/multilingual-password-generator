@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { Box, Paper, Container, Typography, useMediaQuery, Skeleton } from '@mui/material';
+import { Box, Paper, Container, Typography, useMediaQuery, Skeleton, Snackbar, Alert } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles'
 import { usePasswordGeneration } from './hooks/usePasswordGeneration'
 import { usePasswordStrength } from '@/lib/security/passwordStrength'
@@ -32,6 +32,7 @@ export function PasswordGenerator() {
     isEditing,
     options,
     isClient,
+    snackbarOpen,
     setPassword,
     setWordCount,
     setLength,
@@ -40,6 +41,7 @@ export function PasswordGenerator() {
     handleTypeChange,
     handleOptionsChange,
     generatePassword,
+    handleSnackbarClose
   } = usePasswordGeneration();
 
   const strengthResult = usePasswordStrength(password);
@@ -176,9 +178,9 @@ export function PasswordGenerator() {
           <Box sx={{
             mb: 3,
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            flexDirection: 'column', // Changed from 'row'
+            alignItems: 'flex-start',   // Changed from 'center'
+            gap: 1, // Added for spacing
           }}>
             <Typography variant="body2" color="text.secondary">
               Score: <span style={{ color: '#1976d2', fontWeight: 500 }}>
@@ -186,7 +188,7 @@ export function PasswordGenerator() {
               </span>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Time: <span style={{ color: '#1976d2', fontWeight: 500 }}>
+              Time to crack: <span style={{ color: '#1976d2', fontWeight: 500 }}>
                 {strengthResult.crackTimesDisplay.offlineSlowHashing1e4PerSecond}
               </span>
             </Typography>
@@ -244,6 +246,16 @@ export function PasswordGenerator() {
     <ErrorBoundary>
       <ThemeProvider theme={theme}>
         {isMobile ? <MobileLayout /> : <DesktopLayout />}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+            Password copied to clipboard!
+          </Alert>
+        </Snackbar>
       </ThemeProvider>
     </ErrorBoundary>
   );

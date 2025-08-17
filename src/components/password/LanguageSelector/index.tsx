@@ -1,5 +1,6 @@
 import { Box, FormGroup, Stack, FormControlLabel, Checkbox, Typography } from '@mui/material'
-import type { PasswordOptions } from '@/types'
+import type { PasswordOptions, LanguageCode } from '@/types'
+import { SUPPORTED_LANGUAGES } from '@/lib/utils/constants'
 
 /**
  * Component for selecting character sets and languages
@@ -8,7 +9,7 @@ import type { PasswordOptions } from '@/types'
 
 interface LanguageSelectorProps {
     options: PasswordOptions
-    onChange: (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: (name: LanguageCode) => (event: React.ChangeEvent<HTMLInputElement>) => void
     type: 'password' | 'passphrase'
     mode: 'light' | 'dark'
 }
@@ -52,23 +53,10 @@ export default function LanguageSelector({ options, onChange, type, mode }: Lang
                 </Typography>
                 <FormGroup>
                     <Stack direction="row" flexWrap="wrap" gap={2}>
-                        {[
-                            { key: 'bengali', label: 'Bengali' },
-                            { key: 'gujarati', label: 'Gujarati' },
-                            { key: 'hindi', label: 'Hindi' },
-                            { key: 'kannada', label: 'Kannada' },
-                            { key: 'malayalam', label: 'Malayalam' },
-                            { key: 'manipuri', label: 'Manipuri' },
-                            { key: 'odia', label: 'Odia' },
-                            { key: 'punjabi', label: 'Punjabi' },
-                            { key: 'santali', label: 'Santali' },
-                            { key: 'tamil', label: 'Tamil' },
-                            { key: 'telugu', label: 'Telugu' },
-                            { key: 'urdu', label: 'Urdu' }
-                        ].map(({ key, label }) => (
+                        {SUPPORTED_LANGUAGES.INDIAN.map(({ code, label }) => (
                             <FormControlLabel
-                                key={key}
-                                control={<Checkbox checked={options[key as keyof PasswordOptions]} onChange={onChange(key)} />}
+                                key={code}
+                                control={<Checkbox checked={options[code]} onChange={onChange(code)} />}
                                 label={label}
                                 sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                             />
@@ -82,39 +70,10 @@ export default function LanguageSelector({ options, onChange, type, mode }: Lang
                 </Typography>
                 <FormGroup>
                     <Stack direction="row" flexWrap="wrap" gap={2}>
-                        {[
-                            { key: 'bulgarian', label: 'Bulgarian' },
-                            { key: 'croatian', label: 'Croatian' },
-                            { key: 'czech', label: 'Czech' },
-                            { key: 'danish', label: 'Danish' },
-                            { key: 'dutch', label: 'Dutch' },
-                            { key: 'english', label: 'English' },
-                            { key: 'estonian', label: 'Estonian' },
-                            { key: 'french', label: 'French' },
-                            { key: 'greek', label: 'Greek' },
-                            { key: 'hungarian', label: 'Hungarian' },
-                            { key: 'iranianPersian', label: 'Iranian Persian' },
-                            { key: 'italian', label: 'Italian' },
-                            { key: 'japanese', label: 'Japanese' },
-                            { key: 'javanese', label: 'Javanese' },
-                            { key: 'korean', label: 'Korean' },
-                            { key: 'latvian', label: 'Latvian' },
-                            { key: 'lithuanian', label: 'Lithuanian' },
-                            { key: 'maltese', label: 'Maltese' },
-                            { key: 'mandarin', label: 'Mandarin' },
-                            { key: 'romanian', label: 'Romanian' },
-                            { key: 'russian', label: 'Russian' },
-                            { key: 'slovenian', label: 'Slovenian' },
-                            { key: 'spanish', label: 'Spanish' },
-                            { key: 'swedish', label: 'Swedish' },
-                            { key: 'thai', label: 'Thai' },
-                            { key: 'turkish', label: 'Turkish' },
-                            { key: 'vietnamese', label: 'Vietnamese' },
-                            { key: 'welsh', label: 'Welsh' }
-                        ].map(({ key, label }) => (
+                        {SUPPORTED_LANGUAGES.INTERNATIONAL.map(({ code, label }) => (
                             <FormControlLabel
-                                key={key}
-                                control={<Checkbox checked={options[key as keyof PasswordOptions]} onChange={onChange(key)} />}
+                                key={code}
+                                control={<Checkbox checked={options[code]} onChange={onChange(code)} />}
                                 label={label}
                                 sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
                             />
@@ -133,46 +92,14 @@ export default function LanguageSelector({ options, onChange, type, mode }: Lang
             </Typography>
             <FormGroup>
                 <Stack direction="row" flexWrap="wrap" gap={2}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={options.english}
-                                onChange={onChange('english')}
-                            />
-                        }
-                        label="English"
-                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={options.hindi}
-                                onChange={onChange('hindi')}
-                            />
-                        }
-                        label="Hindi"
-                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={options.tamil}
-                                onChange={onChange('tamil')}
-                            />
-                        }
-                        label="Tamil"
-                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={options.telugu}
-                                onChange={onChange('telugu')}
-                            />
-                        }
-                        label="Telugu"
-                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
-                    />
+                    {SUPPORTED_LANGUAGES.PASSPHRASE.map(({ code, label }) => (
+                        <FormControlLabel
+                            key={code}
+                            control={<Checkbox checked={options[code]} onChange={onChange(code)} />}
+                            label={label}
+                            sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
+                        />
+                    ))}
                 </Stack>
             </FormGroup>
         </Box>
