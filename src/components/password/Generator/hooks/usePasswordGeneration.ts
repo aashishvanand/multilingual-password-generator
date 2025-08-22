@@ -278,7 +278,6 @@ export function usePasswordGeneration() {
 
             if (type === 'password') {
                 const isLatinCharset = optionName === 'uppercase' || optionName === 'lowercase';
-                const isNonLatinScript = !['uppercase', 'lowercase', 'numbers', 'symbols', 'english'].includes(optionName);
 
                 if (optionName === 'english') {
                     updatedOptions.uppercase = newValue;
@@ -287,18 +286,6 @@ export function usePasswordGeneration() {
                     updatedOptions.english = true;
                 } else if (!updatedOptions.uppercase && !updatedOptions.lowercase) {
                     updatedOptions.english = false;
-                }
-                
-                if ((isLatinCharset || optionName === 'english') && newValue) {
-                    Object.keys(updatedOptions).forEach(key => {
-                        if (!['uppercase', 'lowercase', 'numbers', 'symbols', 'english'].includes(key)) {
-                            updatedOptions[key] = false;
-                        }
-                    });
-                } else if (isNonLatinScript && newValue) {
-                    updatedOptions.english = false;
-                    updatedOptions.uppercase = false;
-                    updatedOptions.lowercase = false;
                 }
             }
             setOptions(updatedOptions);
