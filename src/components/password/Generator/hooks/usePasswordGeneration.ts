@@ -146,39 +146,42 @@ export function usePasswordGeneration() {
         return passwordGenerator.generate(length, options)
     }, [length, options])
 
-    const generatePassphrase = useCallback(() => {
+    const generatePassphrase = useCallback(async () => {
         const selectedLanguages = Object.entries(options)
             .filter(([, enabled]) => enabled)
-            .map(([lang]) => lang as PassphraseLanguage)
+            .map(([lang]) => lang as string)
 
         if (selectedLanguages.length === 0) {
-            selectedLanguages.push('english')
+            selectedLanguages.push('english');
         }
 
-        const words = Array.from({ length: wordCount }, () => {
-            const lang = selectedLanguages[Math.floor(Math.random() * selectedLanguages.length)]
-            const word = wordGenerator.generate({
+        // Use Promise.all to fetch words concurrently
+        const words = await Promise.all(Array.from({ length: wordCount }, async () => {
+            const lang = selectedLanguages[Math.floor(Math.random() * selectedLanguages.length)];
+            // Await the generate method for each word
+            const word = await wordGenerator.generate({
                 language: lang,
                 minLength: 3,
                 maxLength: 8
-            }) as string
-            return word.charAt(0).toUpperCase() + word.slice(1)
-        })
+            });
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }));
 
-        const randomNum = Math.floor(Math.random() * 900) + 100
-        return `${words.join('-')}${randomNum}`
-    }, [options, wordCount])
-    
-    const generatePassword = useCallback(() => {
-        if (!isClient) return
+        const randomNum = Math.floor(Math.random() * 900) + 100;
+        return `${words.join('-')}${randomNum}`;
+    }, [options, wordCount]);
 
-        const newPassword = type === 'passphrase'
+    const generatePassword = useCallback(async () => {
+        if (!isClient) return;
+
+        // Await the result of the generation
+        const newPassword = await (type === 'passphrase'
             ? generatePassphrase()
-            : generateRandomPassword()
+            : generateRandomPassword());
 
-        setPassword(newPassword)
-        checkPasswordStrength(newPassword)
-    }, [type, generatePassphrase, generateRandomPassword, isClient, checkPasswordStrength])
+        setPassword(newPassword);
+        checkPasswordStrength(newPassword);
+    }, [type, generatePassphrase, generateRandomPassword, isClient, checkPasswordStrength]);
 
 
     const handleLengthChange = (newValue: number) => {
@@ -215,9 +218,9 @@ export function usePasswordGeneration() {
                 // Check if at least one option is enabled
                 hasAnyOption = Object.values(options).some(value => value === true);
             } else { // passphrase
-                const passphraseLanguages = SUPPORTED_LANGUAGES.PASSPHRASE.map(lang => lang.code);
+                const passphraseLanguages = Object.values(SUPPORTED_LANGUAGES.PASSPHRASE).flatMap(continent => continent.map(lang => lang.code));
                 hasAnyOption = Object.entries(options)
-                    .filter(([key]) => (passphraseLanguages as readonly string[]).includes(key)) 
+                    .filter(([key]) => (passphraseLanguages as readonly string[]).includes(key))
                     .some(([, value]) => value === true);
             }
 

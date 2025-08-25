@@ -47,39 +47,26 @@ export default function LanguageSelector({ options, onChange, type, mode }: Lang
                     </Stack>
                 </FormGroup>
 
-                {/* Indian Scripts Section */}
-                <Typography variant="subtitle1" color="primary" fontWeight="medium" sx={{ mt: 3 }}>
-                    Indian Scripts
-                </Typography>
-                <FormGroup>
-                    <Stack direction="row" flexWrap="wrap" gap={2}>
-                        {SUPPORTED_LANGUAGES.INDIAN.map(({ code, label }) => (
-                            <FormControlLabel
-                                key={code}
-                                control={<Checkbox checked={options[code]} onChange={onChange(code)} />}
-                                label={label}
-                                sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
-                            />
-                        ))}
-                    </Stack>
-                </FormGroup>
-
-                {/* International Scripts Section */}
-                <Typography variant="subtitle1" color="primary" fontWeight="medium" sx={{ mt: 3 }}>
-                    International Scripts
-                </Typography>
-                <FormGroup>
-                    <Stack direction="row" flexWrap="wrap" gap={2}>
-                        {SUPPORTED_LANGUAGES.INTERNATIONAL.map(({ code, label }) => (
-                            <FormControlLabel
-                                key={code}
-                                control={<Checkbox checked={options[code]} onChange={onChange(code)} />}
-                                label={label}
-                                sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
-                            />
-                        ))}
-                    </Stack>
-                </FormGroup>
+                {/* Dynamically render scripts by continent */}
+                {Object.entries(SUPPORTED_LANGUAGES.PASSWORD).map(([continent, languages]) => (
+                    <Box key={continent} sx={{ mt: 3 }}>
+                        <Typography variant="subtitle1" color="primary" fontWeight="medium" sx={{ textTransform: 'capitalize' }}>
+                            {continent.toLowerCase()} Scripts
+                        </Typography>
+                        <FormGroup>
+                            <Stack direction="row" flexWrap="wrap" gap={2}>
+                                {languages.map(({ code, label }) => (
+                                    <FormControlLabel
+                                        key={code}
+                                        control={<Checkbox checked={!!options[code]} onChange={onChange(code as LanguageCode)} />}
+                                        label={label}
+                                        sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
+                                    />
+                                ))}
+                            </Stack>
+                        </FormGroup>
+                    </Box>
+                ))}
             </Box>
         )
     }
@@ -87,21 +74,25 @@ export default function LanguageSelector({ options, onChange, type, mode }: Lang
     // Passphrase language selection
     return (
         <Box>
-            <Typography variant="subtitle1" color="primary" fontWeight="medium">
-                Languages
-            </Typography>
-            <FormGroup>
-                <Stack direction="row" flexWrap="wrap" gap={2}>
-                    {SUPPORTED_LANGUAGES.PASSPHRASE.map(({ code, label }) => (
-                        <FormControlLabel
-                            key={code}
-                            control={<Checkbox checked={options[code]} onChange={onChange(code)} />}
-                            label={label}
-                            sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
-                        />
-                    ))}
-                </Stack>
-            </FormGroup>
+            {Object.entries(SUPPORTED_LANGUAGES.PASSPHRASE).map(([continent, languages]) => (
+                <Box key={continent} sx={{ mb: 3 }}>
+                    <Typography variant="subtitle1" color="primary" fontWeight="medium" sx={{ textTransform: 'capitalize' }}>
+                        {continent.toLowerCase()} Languages
+                    </Typography>
+                    <FormGroup>
+                        <Stack direction="row" flexWrap="wrap" gap={2}>
+                            {languages.map(({ code, label }) => (
+                                <FormControlLabel
+                                    key={code}
+                                    control={<Checkbox checked={!!options[code]} onChange={onChange(code as LanguageCode)} />}
+                                    label={label}
+                                    sx={{ color: mode === 'dark' ? 'rgba(255, 255, 255, 0.87)' : 'inherit' }}
+                                />
+                            ))}
+                        </Stack>
+                    </FormGroup>
+                </Box>
+            ))}
         </Box>
     )
 }
