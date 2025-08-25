@@ -1,18 +1,20 @@
 import { SUPPORTED_LANGUAGES } from "@/lib/utils/constants";
 
 // Dynamically create a union type of all language codes from the constants
-type IndianLanguageCode = typeof SUPPORTED_LANGUAGES.INDIAN[number]['code'];
-type InternationalLanguageCode = typeof SUPPORTED_LANGUAGES.INTERNATIONAL[number]['code'];
-type PassphraseLanguageCode = typeof SUPPORTED_LANGUAGES.PASSPHRASE[number]['code'];
+type AsiaPasswordCode = typeof SUPPORTED_LANGUAGES.PASSWORD.ASIA[number]['code'];
+type EuropePasswordCode = typeof SUPPORTED_LANGUAGES.PASSWORD.EUROPE[number]['code'];
+type AsiaPassphraseCode = typeof SUPPORTED_LANGUAGES.PASSPHRASE.ASIA[number]['code'];
+type EuropePassphraseCode = typeof SUPPORTED_LANGUAGES.PASSPHRASE.EUROPE[number]['code'];
 
-export type LanguageCode = 
-    | 'uppercase' 
-    | 'lowercase' 
-    | 'numbers' 
-    | 'symbols' 
-    | IndianLanguageCode 
-    | InternationalLanguageCode
-    | PassphraseLanguageCode;
+export type LanguageCode =
+    | 'uppercase'
+    | 'lowercase'
+    | 'numbers'
+    | 'symbols'
+    | AsiaPasswordCode
+    | EuropePasswordCode
+    | AsiaPassphraseCode
+    | EuropePassphraseCode;
 
 /**
  * Type definitions for password generation options
