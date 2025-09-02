@@ -1,3 +1,8 @@
+/**
+ * @file wordGenerator.ts
+ * @description Contains the logic for fetching wordlists and generating random words for passphrase creation.
+ */
+
 'use client'
 
 import seedrandom from 'seedrandom';
@@ -5,10 +10,10 @@ import { getLanguageCode } from '../utils/languageCodes';
 
 // Define the structure for the options passed to the generator
 type GenerateOptions = {
-  language?: string
-  minLength?: number
-  maxLength?: number
-  seed?: string
+    language?: string
+    minLength?: number
+    maxLength?: number
+    seed?: string
 }
 
 // A simple in-memory cache to store fetched wordlists.
@@ -54,7 +59,7 @@ export const wordGenerator = {
      */
     generate: async (options: GenerateOptions = {}): Promise<string> => {
         const { language = 'english', minLength = 3, maxLength = 8, seed } = options
-        
+
         const wordlist = await getWordlist(language) // No change needed here
 
         if (wordlist.length === 0) {
@@ -66,7 +71,7 @@ export const wordGenerator = {
         )
 
         const targetList = suitableWords.length > 0 ? suitableWords : wordlist;
-        
+
         const rng = seed ? seedrandom(seed) : Math.random;
         const randomIndex = Math.floor(rng() * targetList.length);
 

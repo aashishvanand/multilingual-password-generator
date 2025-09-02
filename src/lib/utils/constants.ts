@@ -1,7 +1,12 @@
 /**
- * Application-wide constants for password generation and configuration
+ * @file constants.ts
+ * @description This file contains application-wide constants for password generation,
+ * strength levels, and supported languages.
  */
 
+/**
+ * Application-wide constants for password generation and configuration
+ */
 export const MIN_PASSWORD_LENGTH = 8
 export const MAX_PASSWORD_LENGTH = 128
 export const DEFAULT_PASSWORD_LENGTH = 14

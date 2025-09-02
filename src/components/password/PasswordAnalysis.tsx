@@ -1,3 +1,9 @@
+/**
+ * @file PasswordAnalysis.tsx
+ * @description A component that displays a detailed analysis of the password's strength,
+ * including crack time estimations, feedback, and whether it has been compromised in a known data breach.
+ */
+
 import { Box, Paper, Typography, Divider, Tooltip, IconButton, LinearProgress, Alert } from '@mui/material';
 import { InfoOutlined, WarningAmber } from '@mui/icons-material';
 import type { StrengthResult } from '@/lib/security/passwordStrength';

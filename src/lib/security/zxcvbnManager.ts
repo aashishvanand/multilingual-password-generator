@@ -1,3 +1,9 @@
+/**
+ * @file zxcvbnManager.ts
+ * @description Manages the configuration and initialization of the zxcvbn-ts password strength estimation library.
+ * It uses a singleton pattern to ensure a single instance manages the configuration, including custom user dictionaries and l33t speak variations.
+ */
+
 import { zxcvbnOptions } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'

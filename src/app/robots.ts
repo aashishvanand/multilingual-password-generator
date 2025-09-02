@@ -1,3 +1,8 @@
+/**
+ * @file robots.ts
+ * @description Generates the robots.txt file for the website, controlling web crawler access.
+ */
+
 export default function robots() {
     return {
         rules: [

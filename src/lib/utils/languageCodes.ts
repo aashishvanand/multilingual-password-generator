@@ -1,3 +1,8 @@
+/**
+ * @file languageCodes.ts
+ * @description Provides a utility function to map full language names to their two-letter ISO 639-1 codes.
+ */
+
 const languageCodeMap: { [key: string]: string } = {
     bengali: 'bn',
     bulgarian: 'bg',

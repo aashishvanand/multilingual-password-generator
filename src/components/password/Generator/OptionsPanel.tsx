@@ -1,3 +1,9 @@
+/**
+ * @file OptionsPanel.tsx
+ * @description A component that houses all the user-configurable options for password generation,
+ * including type (password/passphrase), length/word count, and language/character set selection.
+ */
+
 import { Box, Typography, Slider, RadioGroup, FormControlLabel, Radio, Alert } from '@mui/material'
 import LanguageSelector from '../LanguageSelector'
 import type { PasswordOptions } from '@/types'

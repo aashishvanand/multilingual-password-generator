@@ -1,3 +1,9 @@
+/**
+ * @file layout.tsx
+ * @description The root layout for the entire application.
+ * This component sets up the HTML structure, including fonts, metadata, and global styles.
+ */
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";

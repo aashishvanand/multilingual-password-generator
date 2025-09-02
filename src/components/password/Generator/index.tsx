@@ -1,3 +1,10 @@
+/**
+ * @file index.tsx
+ * @description The main password generator component that orchestrates the entire UI.
+ * It integrates the password display, options panel, control buttons, and strength analysis,
+ * and handles the responsive layout for desktop and mobile views.
+ */
+
 'use client'
 
 import React, { useState } from 'react';

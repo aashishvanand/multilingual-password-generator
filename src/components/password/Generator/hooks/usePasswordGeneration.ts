@@ -1,3 +1,9 @@
+/**
+ * @file usePasswordGeneration.ts
+ * @description A custom React hook to manage the state and logic for password generation.
+ * This includes handling user options, generating passwords and passphrases, and checking for compromises.
+ */
+
 import { useState, useEffect, useCallback } from 'react'
 import { passwordGenerator } from '@/lib/generators/passwordGenerator'
 import { wordGenerator } from '@/lib/generators/wordGenerator'

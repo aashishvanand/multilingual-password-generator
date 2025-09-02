@@ -1,3 +1,8 @@
+/**
+ * @file index.tsx
+ * @description A React component that allows users to select which character sets and languages to include when generating passwords or passphrases.
+ */
+
 import { Box, FormGroup, Stack, FormControlLabel, Checkbox, Typography } from '@mui/material'
 import type { PasswordOptions, LanguageCode } from '@/types'
 import { SUPPORTED_LANGUAGES } from '@/lib/utils/constants'

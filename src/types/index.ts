@@ -1,3 +1,8 @@
+/**
+ * @file index.ts
+ * @description This file contains all the primary TypeScript type definitions and interfaces used throughout the application.
+ */
+
 import { SUPPORTED_LANGUAGES } from "@/lib/utils/constants";
 
 // Dynamically create a union type of all language codes from the constants

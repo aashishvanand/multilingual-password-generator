@@ -1,3 +1,8 @@
+/**
+ * @file ClientOnly.tsx
+ * @description A component that ensures its children are only rendered on the client-side.
+ * This is useful for avoiding hydration errors with components that rely on browser-specific APIs.
+ */
 'use client'
 
 import { useEffect, useState, type ReactNode } from 'react'

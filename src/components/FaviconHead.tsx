@@ -1,3 +1,8 @@
+/**
+ * @file FaviconHead.tsx
+ * @description Renders the necessary <link> and <meta> tags for favicons and theme colors in the document head.
+ */
+
 import { Fragment } from 'react'
 
 export default function FaviconHead() {

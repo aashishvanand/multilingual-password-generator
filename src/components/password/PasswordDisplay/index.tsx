@@ -1,3 +1,9 @@
+/**
+ * @file index.tsx
+ * @description A component responsible for displaying the generated password.
+ * It includes an editable text field for the password itself.
+ */
+
 import { Typography, IconButton, Box } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
