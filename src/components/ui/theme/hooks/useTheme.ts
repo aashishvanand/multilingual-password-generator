@@ -1,6 +1,9 @@
 /**
- * Custom hook for theme management
+ * @file useTheme.ts
+ * @description This custom hook manages the application's theme, including light and dark modes.
+ * It allows toggling the theme and persists the user's preference in local storage.
  */
+
 import { useState, useCallback } from 'react'
 import { createTheme } from '@mui/material/styles'
 

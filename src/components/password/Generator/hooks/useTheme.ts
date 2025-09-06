@@ -1,3 +1,9 @@
+/**
+ * @file useTheme.ts
+ * @description This custom hook manages the application's theme, allowing users to toggle between light and dark modes.
+ * It persists the selected theme in local storage to maintain user preferences across sessions.
+ */
+
 import { useState, useCallback } from 'react'
 import { createTheme } from '@mui/material/styles'
 

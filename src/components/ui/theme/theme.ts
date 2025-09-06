@@ -1,7 +1,9 @@
 /**
- * Theme configuration for Material-UI
- * Defines light and dark mode themes
+ * @file theme.ts
+ * @description This file defines the custom themes for the application, including light and dark modes.
+ * It provides a centralized configuration for MUI components to ensure a consistent look and feel.
  */
+
 import { createTheme } from '@mui/material'
 
 export const theme = {

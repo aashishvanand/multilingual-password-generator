@@ -1,3 +1,9 @@
+/**
+ * @file checkPassword.ts
+ * @description This file contains the logic for checking if a password has been compromised.
+ * It uses the "Have I Been Pwned" API to securely check for breaches without exposing the full password.
+ */
+
 'use server'
 
 import crypto from 'crypto'

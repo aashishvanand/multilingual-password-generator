@@ -1,3 +1,9 @@
+/**
+ * @file StrengthMeter.tsx
+ * @description This component visualizes the strength of a generated password.
+ * It provides immediate feedback to the user about the security level of their password.
+ */
+
 import { Box, Typography, LinearProgress } from '@mui/material'
 import { usePasswordStrength } from '@/lib/security/passwordStrength'
 

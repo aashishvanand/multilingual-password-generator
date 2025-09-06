@@ -1,3 +1,9 @@
+/**
+ * @file ThemeToggle.tsx
+ * @description This component provides a UI control for switching between light and dark themes.
+ * It allows users to customize their interface according to their preference.
+ */
+
 import { useState, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { LightMode, DarkMode } from '@mui/icons-material';

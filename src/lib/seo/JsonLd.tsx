@@ -1,3 +1,10 @@
+/**
+ * @file JsonLd.tsx
+ * @description This component generates JSON-LD structured data for SEO purposes.
+ * It helps search engines understand the content and context of the page, improving search visibility.
+ */
+
+
 interface JsonLdProps {
     canonicalUrl?: string;
 }

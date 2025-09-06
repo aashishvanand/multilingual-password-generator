@@ -1,3 +1,9 @@
+/**
+ * @file ControlButtons.tsx
+ * @description This component renders the main control buttons for the password generator.
+ * It includes actions for copying, regenerating, and analyzing the password.
+ */
+
 import { Stack, Button } from '@mui/material'
 import { ContentCopy, Refresh, Check, Analytics } from '@mui/icons-material'
 

@@ -1,3 +1,9 @@
+/**
+ * @file PasswordField.tsx
+ * @description This component renders the password input field, allowing users to view and edit the generated password.
+ * It supports a read-only mode and an editable mode for manual adjustments.
+ */
+
 import { Typography, Box, IconButton } from '@mui/material'
 import { Edit } from '@mui/icons-material'
 import styles from './styles.module.css'

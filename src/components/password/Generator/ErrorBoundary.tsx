@@ -1,3 +1,9 @@
+/**
+ * @file ErrorBoundary.tsx
+ * @description This component provides an error boundary to catch and handle runtime errors gracefully.
+ * It prevents the entire application from crashing and displays a user-friendly fallback UI.
+ */
+
 import { Component, ErrorInfo, ReactNode } from 'react'
 import { Box, Typography, Button } from '@mui/material'
 

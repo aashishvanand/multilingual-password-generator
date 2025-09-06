@@ -1,3 +1,9 @@
+/**
+ * @file PasswordStrengthDisplay.tsx
+ * @description This component displays the calculated strength of the password.
+ * It provides users with clear, color-coded feedback on their password's security level.
+ */
+
 import { Box, Paper, Typography, Alert } from '@mui/material';
 import type { StrengthResult } from '@/lib/security/passwordStrength'
 

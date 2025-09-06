@@ -1,3 +1,9 @@
+/**
+ * @file metadata.ts
+ * @description This file contains the site's metadata for SEO and social sharing.
+ * It provides a centralized configuration for titles, descriptions, and other important SEO tags.
+ */
+
 export const siteMetadata = {
     title: 'Multilingual Password Generator - Secure Passwords in 35+ Languages',
     description: 'Generate secure, customizable passwords in 35+ languages including Hindi, Tamil, Chinese, and more. Features password strength analysis, breach checking, and multiple character sets.',

@@ -1,3 +1,9 @@
+/**
+ * @file useKeyboardShortcuts.ts
+ * @description This custom hook registers keyboard shortcuts for generating and copying passwords.
+ * It provides a seamless user experience by allowing quick actions via keyboard commands.
+ */
+
 import { useEffect } from 'react'
 
 /**

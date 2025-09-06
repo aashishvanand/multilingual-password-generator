@@ -1,3 +1,9 @@
+/**
+ * @file PlatformCompatibility.tsx
+ * @description This component displays a list of platforms where the generated password is compatible.
+ * It helps users understand the usability of their password across different operating systems.
+ */
+
 import { Box, Typography, Paper } from '@mui/material';
 
 
