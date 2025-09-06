@@ -1,3 +1,9 @@
+/**
+ * @file passwordStrength.ts
+ * @description Assesses password strength using the zxcvbn library,
+ * providing a score and detailed feedback to help users create stronger passwords.
+ */
+
 import { useMemo, useEffect } from 'react'
 import { zxcvbn } from '@zxcvbn-ts/core'
 import { getZxcvbnManager, createPasswordAnalyzer } from './zxcvbnManager'

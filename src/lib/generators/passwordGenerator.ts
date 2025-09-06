@@ -1,3 +1,9 @@
+/**
+ * @file passwordGenerator.ts
+ * @description Contains the core logic for generating random passwords,
+ * supporting multiple character sets and ensuring cryptographic randomness.
+ */
+
 'use client'
 
 type CharacterSets = {
