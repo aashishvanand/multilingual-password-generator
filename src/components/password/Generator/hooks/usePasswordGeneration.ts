@@ -116,8 +116,6 @@ const DEFAULT_PASSWORD_OPTIONS: PasswordOptions = {
     thai: false
 }
 
-type PassphraseLanguage = 'english' | 'hindi' | 'tamil' | 'telugu';
-
 export function usePasswordGeneration() {
     const [password, setPassword] = useState('')
     const [wordCount, setWordCount] = useState(DEFAULT_WORD_COUNT)

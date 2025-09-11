@@ -1,8 +1,7 @@
 /**
  * @file index.ts
- * @description This file serves as the main export point for theme-related utilities.
- * It simplifies imports for theme hooks and configurations across the application.
+ * @description Main export point for theme utilities
  */
 
-export { useTheme } from './hooks/useTheme';
-export { getTheme as theme } from './theme';
+export { useTheme, getTheme } from './ThemeProvider';
+export { default as ThemeProvider } from './ThemeProvider';

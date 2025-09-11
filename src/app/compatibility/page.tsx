@@ -11,7 +11,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import CompatibilityTable from '../../components/password/Generator/CompatibilityTable';
-import { useTheme } from '@/components/ui/theme/hooks/useTheme';
+import { useTheme } from '@/components/ui/theme/ThemeProvider'; // Fixed import path
 
 export default function CompatibilityPage() {
     const { mode, toggleTheme } = useTheme();

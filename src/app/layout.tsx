@@ -11,11 +11,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import CssBaseline from '@mui/material/CssBaseline';
 import FaviconHead from '@/components/FaviconHead'
 import { siteMetadata } from '@/lib/seo/metadata';
-
-/**
- * Root layout component that wraps the entire application
- * Provides theme configuration, fonts, and global styles
- */
+import ThemeProvider from '@/components/ui/theme/ThemeProvider';
 
 // Configure Geist fonts with subsets
 const geistSans = Geist({
@@ -63,8 +59,10 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <AppRouterCacheProvider>
-          <CssBaseline />
-          {children}
+          <ThemeProvider>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

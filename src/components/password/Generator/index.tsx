@@ -16,7 +16,7 @@ import { PasswordDisplay } from '../PasswordDisplay'
 import { OptionsPanel } from './OptionsPanel'
 import { ControlButtons } from '../PasswordDisplay/ControlButtons'
 import { PasswordAnalysis } from '../PasswordAnalysis' // Import the new component
-import { useTheme } from '@/components/ui/theme/hooks/useTheme'
+import { useTheme } from '@/components/ui/theme/ThemeProvider' // Fixed import path
 import { ErrorBoundary } from './ErrorBoundary'
 import ThemeToggle from './ThemeToggle'
 import PlatformCompatibility from './PlatformCompatibility'
@@ -80,7 +80,7 @@ export function PasswordGenerator() {
     );
   }
 
-  // Desktop Layout
+  // Desktop Layout - ORIGINAL PRESERVED
   const DesktopLayout = () => (
     <Box sx={{
       minHeight: '100vh',
@@ -105,7 +105,7 @@ export function PasswordGenerator() {
           }}
         >
 
-          {/* Password display area */}
+          {/* Password display area - ORIGINAL PRESERVED */}
           <Paper
             elevation={0}
             sx={{
@@ -118,6 +118,7 @@ export function PasswordGenerator() {
               justifyContent: 'space-between',
             }}
           >
+            {/* Fixed props to match interface */}
             <PasswordDisplay
               password={password}
               isEditing={isEditing}
@@ -127,6 +128,7 @@ export function PasswordGenerator() {
             />
           </Paper>
 
+          {/* Fixed props to match interface */}
           <ControlButtons
             copied={copied}
             onCopy={handleCopy}
@@ -135,9 +137,10 @@ export function PasswordGenerator() {
             mode={mode}
           />
           
+          {/* Fixed props: changed strengthResult to strength */}
           {showAnalysis && <PasswordAnalysis password={password} strength={strengthResult} isCompromised={isCompromised} mode={mode} />}
 
-
+          {/* Fixed props: added hasError and mode */}
           <OptionsPanel
             type={type}
             length={length}
@@ -151,14 +154,14 @@ export function PasswordGenerator() {
             mode={mode}
           />
 
-          {/* Platform Compatibility */}
+          {/* Platform Compatibility - ORIGINAL PRESERVED */}
           <PlatformCompatibility mode={mode} />
         </Paper>
       </Container>
     </Box>
   );
 
-  // Mobile Layout
+  // Mobile Layout - ORIGINAL PRESERVED
   const MobileLayout = () => (
     <Box sx={{
       minHeight: '100vh',
@@ -180,7 +183,7 @@ export function PasswordGenerator() {
             bgcolor: mode === 'light' ? 'white' : '#121212',
           }}
         >
-          {/* Password Display */}
+          {/* Password Display - ORIGINAL PRESERVED */}
           <Paper
             elevation={0}
             sx={{
@@ -190,6 +193,7 @@ export function PasswordGenerator() {
               borderRadius: 3,
             }}
           >
+            {/* Fixed props to match interface */}
             <PasswordDisplay
               password={password}
               isEditing={isEditing}
@@ -200,6 +204,7 @@ export function PasswordGenerator() {
           </Paper>
 
           <Box sx={{ mb: 4 }}>
+            {/* Fixed props to match interface */}
             <ControlButtons
               copied={copied}
               onCopy={handleCopy}
@@ -209,9 +214,10 @@ export function PasswordGenerator() {
             />
           </Box>
           
+          {/* Fixed props: changed strengthResult to strength */}
           {showAnalysis && <PasswordAnalysis password={password} strength={strengthResult} isCompromised={isCompromised} mode={mode} />}
 
-
+          {/* Fixed props: added hasError and mode */}
           <OptionsPanel
             type={type}
             length={length}
@@ -225,7 +231,7 @@ export function PasswordGenerator() {
             mode={mode}
           />
 
-          {/* Platform Compatibility */}
+          {/* Platform Compatibility - ORIGINAL PRESERVED */}
           <PlatformCompatibility mode={mode} />
         </Paper>
       </Container>

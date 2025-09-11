@@ -9,14 +9,11 @@
 "use client";
 
 import { useState } from 'react';
-import Image from 'next/image';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip, IconButton, Select, MenuItem, FormControl, TableRowProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton, Select, MenuItem, FormControl } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import WarningIcon from '@mui/icons-material/Warning';
-import { useTheme } from '@/components/ui/theme/hooks/useTheme';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 const platforms = [
     { rank: 1, name: 'Google', hasAccountSupport: 'Yes', support: 'No', notes: '' },
@@ -121,131 +118,105 @@ const platforms = [
     { rank: 100, name: 'Steam Community', hasAccountSupport: 'Yes', support: 'No', notes: '' },
 ];
 
-interface StyledTableRowProps extends TableRowProps {
-    mode: 'light' | 'dark';
-}
-
-const StyledTableRow = styled(TableRow, {
-    shouldForwardProp: (prop) => prop !== 'mode',
-})<StyledTableRowProps>(({ theme, mode }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: mode === 'dark' ? theme.palette.grey[900] : theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
-
-const SupportCell = ({ support, notes }: { support: string; notes?: string }) => {
-    let icon = null;
-    if (support === 'Yes') {
-        icon = <CheckCircleIcon color="success" />;
-    } else if (support === 'No') {
-        icon = <CancelIcon color="error" />;
-    } else if (support === 'NA') {
-        icon = <WarningIcon color="warning" />;
-    } else {
-        return <Typography variant="body2">{support}</Typography>;
-    }
-
-    return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {icon}
-            {notes && (
-                <Tooltip title={notes}>
-                    <IconButton size="small">
-                        <InfoIcon fontSize="inherit" />
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Box>
-    );
-};
-
 export default function CompatibilityTable() {
-    const { mode } = useTheme();
-    const [hasAccountSupportFilter, setHasAccountSupportFilter] = useState('all');
-    const [supportFilter, setSupportFilter] = useState('all');
+    const [filter, setFilter] = useState('all');
+
+    // Function to get icons based on support status
+    const getCompatibilityIcon = (support: string) => {
+        switch (support) {
+            case 'Yes':
+                return <CheckIcon sx={{ color: 'success.main', fontSize: '20px' }} />;
+            case 'No':
+                return <CloseIcon sx={{ color: 'error.main', fontSize: '20px' }} />;
+            case 'NA':
+                return <WarningAmberIcon sx={{ color: 'warning.main', fontSize: '20px' }} />;
+            default:
+                return <CloseIcon sx={{ color: 'error.main', fontSize: '20px' }} />;
+        }
+    };
+
+    // Function to get icons for hasAccountSupport
+    const getAccountSupportIcon = (hasSupport: string) => {
+        switch (hasSupport) {
+            case 'Yes':
+                return <CheckIcon sx={{ color: 'success.main', fontSize: '20px' }} />;
+            case 'No':
+                return <CloseIcon sx={{ color: 'error.main', fontSize: '20px' }} />;
+            case 'NA':
+                return <WarningAmberIcon sx={{ color: 'warning.main', fontSize: '20px' }} />;
+            default:
+                return <CloseIcon sx={{ color: 'error.main', fontSize: '20px' }} />;
+        }
+    };
 
     const filteredPlatforms = platforms.filter(platform => {
-        const hasAccountSupportMatch = hasAccountSupportFilter === 'all' || platform.hasAccountSupport === hasAccountSupportFilter;
-        const supportMatch = supportFilter === 'all' || platform.support === supportFilter;
-        return hasAccountSupportMatch && supportMatch;
+        if (filter === 'all') return true;
+        if (filter === 'compatible') return platform.support === 'Yes';
+        if (filter === 'incompatible') return platform.support === 'No';
+        return true;
     });
 
-    const renderFilter = (value: string, onChange: (value: string) => void) => (
-        <FormControl size="small" sx={{ minWidth: 80 }}>
-            <Select
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                displayEmpty
-                variant="standard"
-                sx={{
-                    color: mode === 'dark' ? 'white' : 'inherit',
-                    '& .MuiSvgIcon-root': {
-                        color: mode === 'dark' ? 'white' : 'inherit',
-                    },
-                    '&:before': { border: 'none' },
-                    '&:after': { border: 'none' },
-                    '& .MuiSelect-select': {
-                        padding: '4px 24px 4px 8px',
-                        fontSize: '0.875rem',
-                    },
-                }}
-            >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="Yes">Yes</MenuItem>
-                <MenuItem value="No">No</MenuItem>
-                <MenuItem value="NA">NA</MenuItem>
-            </Select>
-        </FormControl>
-    );
-
     return (
-        <TableContainer> {/* Changed: Removed component={Paper} and elevation={0} */}
-            <Table sx={{ minWidth: 650 }} aria-label="compatibility table">
-                {/* TableHead and TableBody remain the same */}
-                <TableHead>
-                    <TableRow>
-                        <TableCell sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>Rank</TableCell>
-                        <TableCell sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>Service Name</TableCell>
-                        <TableCell>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: mode === 'dark' ? 'white' : 'inherit' }}>
-                                Has Account Support
-                                {renderFilter(hasAccountSupportFilter, setHasAccountSupportFilter)}
-                            </Box>
-                        </TableCell>
-                        <TableCell>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: mode === 'dark' ? 'white' : 'inherit' }}>
-                                Support
-                                {renderFilter(supportFilter, setSupportFilter)}
-                            </Box>
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {filteredPlatforms.map((platform) => (
-                        <StyledTableRow key={platform.name} mode={mode}>
-                            <TableCell component="th" scope="row" sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>
-                                {platform.rank}
-                            </TableCell>
-                            <TableCell>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <Image src={`https://www.google.com/s2/favicons?domain=${platform.name.toLowerCase().replace(/ /g, '')}.com`} alt={`${platform.name} logo`} width={16} height={16} />
-                                    <Typography sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>{platform.name}</Typography>
-                                </Box>
-                            </TableCell>
-                            <TableCell>
-                                <SupportCell support={platform.hasAccountSupport} notes={platform.notes} />
-                            </TableCell>
-                            <TableCell>
-                                <SupportCell support={platform.support} />
-                            </TableCell>
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Box>
+            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6" component="h2">
+                    Platform Compatibility
+                </Typography>
+                <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <Select
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        displayEmpty
+                    >
+                        <MenuItem value="all">All Platforms</MenuItem>
+                        <MenuItem value="compatible">Compatible</MenuItem>
+                        <MenuItem value="incompatible">Incompatible</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
+
+            <TableContainer>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Rank</TableCell>
+                            <TableCell>Platform</TableCell>
+                            <TableCell>Account Support</TableCell>
+                            <TableCell>Compatible</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {filteredPlatforms.map((platform) => (
+                            <TableRow key={platform.rank}>
+                                <TableCell>{platform.rank}</TableCell>
+                                <TableCell>{platform.name}</TableCell>
+
+                                {/* Account Support with icon and optional info button */}
+                                <TableCell>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        {getAccountSupportIcon(platform.hasAccountSupport)}
+                                        {platform.notes && (
+                                            <Tooltip title={platform.notes} arrow placement="top">
+                                                <IconButton size="small" sx={{ p: 0.5 }}>
+                                                    <InfoIcon fontSize="small" sx={{ color: 'text.secondary' }} />
+                                                </IconButton>
+                                            </Tooltip>
+                                        )}
+                                    </Box>
+                                </TableCell>
+
+                                {/* Compatible column with just icon */}
+                                <TableCell>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                                        {getCompatibilityIcon(platform.support)}
+                                    </Box>
+                                </TableCell>
+
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
     );
 }
