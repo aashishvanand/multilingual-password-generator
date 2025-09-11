@@ -1,8 +1,16 @@
+/**
+ * @file CompatibilityTable.tsx
+ * @description This component displays a sortable and filterable table of platforms,
+ * indicating their compatibility with the password generator. It shows which platforms
+ * support account creation and whether they are compatible with the generated passwords.
+ * The data is based on the top 100 websites from Cloudflare Radar.
+ */
+
 "use client";
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip, IconButton, Select, MenuItem, FormControl } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip, IconButton, Select, MenuItem, FormControl, TableRowProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -112,9 +120,15 @@ const platforms = [
     { rank: 100, name: 'Steam Community', hasAccountSupport: 'Yes', support: 'No', notes: '' },
 ];
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+interface StyledTableRowProps extends TableRowProps {
+  mode: 'light' | 'dark';
+}
+
+const StyledTableRow = styled(TableRow, {
+    shouldForwardProp: (prop) => prop !== 'mode',
+})<StyledTableRowProps>(({ theme, mode }) => ({
     '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
+        backgroundColor: mode === 'dark' ? theme.palette.grey[900] : theme.palette.action.hover,
     },
     // hide last border
     '&:last-child td, &:last-child th': {
@@ -148,7 +162,7 @@ const SupportCell = ({ support, notes }: { support: string; notes?: string }) =>
     );
 };
 
-export default function CompatibilityTable() {
+export default function CompatibilityTable({ mode }: { mode: 'light' | 'dark' }) {
     const [hasAccountSupportFilter, setHasAccountSupportFilter] = useState('all');
     const [supportFilter, setSupportFilter] = useState('all');
 
@@ -166,6 +180,10 @@ export default function CompatibilityTable() {
                 displayEmpty
                 variant="standard"
                 sx={{
+                    color: mode === 'dark' ? 'white' : 'inherit',
+                    '& .MuiSvgIcon-root': {
+                        color: mode === 'dark' ? 'white' : 'inherit',
+                    },
                     '&:before': {
                         border: 'none',
                     },
@@ -187,20 +205,20 @@ export default function CompatibilityTable() {
     );
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ bgcolor: mode === 'dark' ? 'grey.800' : 'white' }}>
             <Table sx={{ minWidth: 650 }} aria-label="compatibility table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Rank</TableCell>
-                        <TableCell>Service Name</TableCell>
+                        <TableCell sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>Rank</TableCell>
+                        <TableCell sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>Service Name</TableCell>
                         <TableCell>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: mode === 'dark' ? 'white' : 'inherit' }}>
                                 Has Account Support
                                 {renderFilter(hasAccountSupportFilter, setHasAccountSupportFilter)}
                             </Box>
                         </TableCell>
                         <TableCell>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: mode === 'dark' ? 'white' : 'inherit' }}>
                                 Support
                                 {renderFilter(supportFilter, setSupportFilter)}
                             </Box>
@@ -209,14 +227,14 @@ export default function CompatibilityTable() {
                 </TableHead>
                 <TableBody>
                     {filteredPlatforms.map((platform) => (
-                        <StyledTableRow key={platform.name}>
-                            <TableCell component="th" scope="row">
+                        <StyledTableRow key={platform.name} mode={mode}>
+                            <TableCell component="th" scope="row" sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>
                                 {platform.rank}
                             </TableCell>
                             <TableCell>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                     <Image src={`https://www.google.com/s2/favicons?domain=${platform.name.toLowerCase().replace(/ /g, '')}.com`} alt={`${platform.name} logo`} width={16} height={16} />
-                                    <Typography>{platform.name}</Typography>
+                                    <Typography sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>{platform.name}</Typography>
                                 </Box>
                             </TableCell>
                             <TableCell>
