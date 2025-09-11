@@ -5,4 +5,4 @@
  */
 
 export { useTheme } from './hooks/useTheme';
-export { theme } from './theme';
+export { getTheme as theme } from './theme';

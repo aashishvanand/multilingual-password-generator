@@ -16,6 +16,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import WarningIcon from '@mui/icons-material/Warning';
+import { useTheme } from '@/components/ui/theme/hooks/useTheme';
 
 const platforms = [
     { rank: 1, name: 'Google', hasAccountSupport: 'Yes', support: 'No', notes: '' },
@@ -121,7 +122,7 @@ const platforms = [
 ];
 
 interface StyledTableRowProps extends TableRowProps {
-  mode: 'light' | 'dark';
+    mode: 'light' | 'dark';
 }
 
 const StyledTableRow = styled(TableRow, {
@@ -162,7 +163,8 @@ const SupportCell = ({ support, notes }: { support: string; notes?: string }) =>
     );
 };
 
-export default function CompatibilityTable({ mode }: { mode: 'light' | 'dark' }) {
+export default function CompatibilityTable() {
+    const { mode } = useTheme();
     const [hasAccountSupportFilter, setHasAccountSupportFilter] = useState('all');
     const [supportFilter, setSupportFilter] = useState('all');
 
@@ -184,12 +186,8 @@ export default function CompatibilityTable({ mode }: { mode: 'light' | 'dark' })
                     '& .MuiSvgIcon-root': {
                         color: mode === 'dark' ? 'white' : 'inherit',
                     },
-                    '&:before': {
-                        border: 'none',
-                    },
-                    '&:after': {
-                        border: 'none',
-                    },
+                    '&:before': { border: 'none' },
+                    '&:after': { border: 'none' },
                     '& .MuiSelect-select': {
                         padding: '4px 24px 4px 8px',
                         fontSize: '0.875rem',
@@ -205,8 +203,9 @@ export default function CompatibilityTable({ mode }: { mode: 'light' | 'dark' })
     );
 
     return (
-        <TableContainer component={Paper} sx={{ bgcolor: mode === 'dark' ? 'grey.800' : 'white' }}>
+        <TableContainer> {/* Changed: Removed component={Paper} and elevation={0} */}
             <Table sx={{ minWidth: 650 }} aria-label="compatibility table">
+                {/* TableHead and TableBody remain the same */}
                 <TableHead>
                     <TableRow>
                         <TableCell sx={{ color: mode === 'dark' ? 'white' : 'inherit' }}>Rank</TableCell>
