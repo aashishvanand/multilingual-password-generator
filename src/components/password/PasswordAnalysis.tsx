@@ -4,158 +4,246 @@
  * including crack time estimations, feedback, and whether it has been compromised in a known data breach.
  */
 
-import { Box, Paper, Typography, Divider, Tooltip, IconButton, LinearProgress, Alert } from '@mui/material';
-import { InfoOutlined, WarningAmber } from '@mui/icons-material';
-import type { StrengthResult } from '@/lib/security/passwordStrength';
+
+import React from 'react';
+import { Box, Typography, Chip, Alert, Paper, LinearProgress } from '@mui/material';
+import { Security, Warning, CheckCircle, Error } from '@mui/icons-material';
+import { StrengthResult } from '@/lib/security/passwordStrength';
 
 interface PasswordAnalysisProps {
-    password: string;
-    strength: StrengthResult;
+    strength: StrengthResult | null;
     isCompromised: boolean;
     mode: 'light' | 'dark';
 }
 
-const strengthLevels = ['Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'];
-const strengthColors = ['#ff4444', '#ffbb33', '#ffbb33', '#00C851', '#007E33'];
+export function PasswordAnalysis({ strength, isCompromised, mode }: PasswordAnalysisProps) {
+    if (!strength) {
+        return (
+            <Paper
+                elevation={0}
+                sx={{
+                    mt: 3,
+                    p: 3,
+                    bgcolor: mode === 'light' ? '#f5f7fa' : '#1e1e1e',
+                    borderRadius: 3,
+                    border: mode === 'light' ? '1px solid #e0e7ff' : '1px solid #374151'
+                }}
+            >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Security color="disabled" />
+                    <Typography variant="body1" color="text.secondary">
+                        Enter a password to see strength analysis
+                    </Typography>
+                </Box>
+            </Paper>
+        );
+    }
 
-const getStrengthColor = (score: number) => strengthColors[score] || '#ff4444';
-const getStrengthText = (score: number) => strengthLevels[score] || 'Unknown';
+    const getStrengthLabel = (score: number) => {
+        switch (score) {
+            case 0: return 'Very Weak';
+            case 1: return 'Weak';
+            case 2: return 'Fair';
+            case 3: return 'Good';
+            case 4: return 'Strong';
+            default: return 'Unknown';
+        }
+    };
 
-const InfoTooltip = ({ title }: { title: string }) => (
-    <Tooltip title={title}>
-        <IconButton size="small" sx={{ ml: 0.5 }}>
-            <InfoOutlined fontSize="inherit" />
-        </IconButton>
-    </Tooltip>
-);
+    const getStrengthColor = (score: number) => {
+        if (score <= 1) return 'error';
+        if (score === 2) return 'warning';
+        if (score === 3) return 'info';
+        return 'success';
+    };
 
-export const PasswordAnalysis = ({ password, strength, isCompromised, mode }: PasswordAnalysisProps) => {
-    // If the password is compromised, override the score to be 0 (the weakest).
-    const score = isCompromised ? 0 : strength.score;
+    const getStrengthIcon = (score: number) => {
+        if (score <= 1) return <Error color="error" />;
+        if (score === 2) return <Warning color="warning" />;
+        if (score >= 3) return <CheckCircle color="success" />;
+        return <Security />;
+    };
+
+    const getProgressValue = (score: number) => (score / 4) * 100;
 
     return (
         <Paper
             elevation={0}
             sx={{
-                p: 4,
-                bgcolor: mode === 'light' ? '#f8f9fa' : '#1e1e1e',
-                borderRadius: 4,
-                mt: 4,
+                mt: 3,
+                p: 3,
+                bgcolor: mode === 'light' ? '#f5f7fa' : '#1e1e1e',
+                borderRadius: 3,
+                border: mode === 'light' ? '1px solid #e0e7ff' : '1px solid #374151'
             }}
         >
-            <Typography variant="h6" gutterBottom color="primary">
-                Password Analysis
-            </Typography>
+            {/* Header */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
+                <Security color="primary" />
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Password Strength Analysis
+                </Typography>
+            </Box>
 
-            {/* Display breach warning at the top if compromised */}
+            {/* Compromise Warning */}
             {isCompromised && (
-                <Alert severity="error" icon={<WarningAmber />} sx={{ mb: 2 }}>
-                    This password has been exposed in a data breach. It is strongly recommended not to use it.
+                <Alert
+                    severity="error"
+                    sx={{
+                        mb: 3,
+                        borderRadius: 2,
+                        '& .MuiAlert-icon': { alignItems: 'center' }
+                    }}
+                >
+                    This password has been found in data breaches. Choose a different password.
                 </Alert>
             )}
 
-            {/* Strength Meter */}
-            <Box sx={{ width: '100%', mb: 2 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2" color="textSecondary">
-                        Password Strength
-                    </Typography>
-                    <Typography
-                        variant="body2"
-                        sx={{ color: getStrengthColor(score) }}
-                    >
-                        {getStrengthText(score)}
-                    </Typography>
-                </Box>
-                <LinearProgress
-                    variant="determinate"
-                    value={(score + 1) * 20}
-                    sx={{
-                        height: 8,
-                        borderRadius: 4,
-                        bgcolor: mode === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)',
-                        '& .MuiLinearProgress-bar': {
-                            bgcolor: getStrengthColor(score),
-                            borderRadius: 4,
-                        },
-                    }}
-                />
-            </Box>
-
-            <Divider sx={{ my: 2 }} />
-
-            <Box sx={{ display: 'grid', gap: 1 }}>
-                <Typography variant="body1">
-                    <strong>Password:</strong> {password}
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="body1">
-                        <strong>Guesses Log10:</strong> {strength.guessesLog10.toFixed(2)}
-                    </Typography>
-                    <InfoTooltip title="The estimated number of guesses needed to crack your password, on a logarithmic scale. Higher is better." />
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="body1">
-                        <strong>Score:</strong> {score} / 4
-                    </Typography>
-                    <InfoTooltip title="A score from 0 to 4 representing the password's overall strength." />
-                </Box>
-                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="body1">
-                       <strong>Function Runtime (ms):</strong> {strength.calcTime}
-                    </Typography>
-                    <InfoTooltip title="The time in milliseconds it took to analyze the password." />
-                </Box>
-            </Box>
-            
-            <Divider sx={{ my: 2 }} />
-
-            <Typography variant="subtitle1" gutterBottom color="primary">
-                Crack Time Estimates
-                <InfoTooltip title="Estimated time to crack the password under different attack scenarios." />
-            </Typography>
-            <Box sx={{ pl: 2 }}>
-                <Typography variant="body2">
-                    <strong>Online (throttled):</strong> {strength.crackTimesDisplay.onlineThrottling100PerHour}
-                </Typography>
-                <Typography variant="body2">
-                    <strong>Online (unthrottled):</strong> {strength.crackTimesDisplay.onlineNoThrottling10PerSecond}
-                </Typography>
-                <Typography variant="body2">
-                    <strong>Offline (slow hash):</strong> {strength.crackTimesDisplay.offlineSlowHashing1e4PerSecond}
-                </Typography>
-                <Typography variant="body2">
-                    <strong>Offline (fast hash):</strong> {strength.crackTimesDisplay.offlineFastHashing1e10PerSecond}
-                </Typography>
-            </Box>
-            
-            {strength.feedback.warning && (
-                <>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="subtitle1" gutterBottom color="error">
-                        Warning
-                    </Typography>
-                    <Typography variant="body2" color="error">
-                        {strength.feedback.warning}
-                    </Typography>
-                </>
-            )}
-
-            {strength.feedback.suggestions.length > 0 && (
-                <>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="subtitle1" gutterBottom color="primary">
-                        Suggestions
-                    </Typography>
-                    <Box component="ul" sx={{ pl: 2, m: 0 }}>
-                        {strength.feedback.suggestions.map((suggestion, index) => (
-                            <li key={index}>
-                                <Typography variant="body2">{suggestion}</Typography>
-                            </li>
-                        ))}
+            {/* Main Strength Display */}
+            <Box sx={{ mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                    {getStrengthIcon(strength.score)}
+                    <Box sx={{ flex: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                {getStrengthLabel(strength.score)}
+                            </Typography>
+                            <Chip
+                                label={`${strength.score}/4`}
+                                color={getStrengthColor(strength.score)}
+                                size="small"
+                                sx={{ fontWeight: 600 }}
+                            />
+                        </Box>
+                        <LinearProgress
+                            variant="determinate"
+                            value={getProgressValue(strength.score)}
+                            color={getStrengthColor(strength.score)}
+                            sx={{
+                                height: 8,
+                                borderRadius: 4,
+                                bgcolor: mode === 'light' ? '#e5e7eb' : '#374151'
+                            }}
+                        />
                     </Box>
-                </>
+                </Box>
+            </Box>
+
+            {/* Custom Wordlist Analysis */}
+            {strength.customAnalysis && strength.customAnalysis.usesCustomWordlists && (
+                <Box sx={{
+                    mb: 3,
+                    p: 2,
+                    bgcolor: mode === 'light' ? '#eff6ff' : '#1e293b',
+                    borderRadius: 2,
+                    border: mode === 'light' ? '1px solid #bfdbfe' : '1px solid #334155'
+                }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
+                        Custom Dictionary Analysis
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        Analyzed using {strength.customAnalysis.totalCustomWords.toLocaleString()} words
+                        from {strength.customAnalysis.loadedLanguages.length} language(s): {' '}
+                        <Box component="span" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                            {strength.customAnalysis.loadedLanguages.join(', ')}
+                        </Box>
+                    </Typography>
+
+                    {strength.customAnalysis.foundInCustomDictionary && (
+                        <Alert
+                            severity="warning"
+                            sx={{
+                                mt: 1,
+                                py: 0.5,
+                                '& .MuiAlert-message': { fontSize: '0.875rem' }
+                            }}
+                        >
+                            Contains words from custom dictionaries
+                        </Alert>
+                    )}
+                </Box>
             )}
+
+            {/* Feedback Section */}
+            {(strength.feedback.warning || strength.feedback.suggestions.length > 0) && (
+                <Box sx={{ mb: 3 }}>
+                    {strength.feedback.warning && (
+                        <Alert
+                            severity="warning"
+                            sx={{
+                                mb: 2,
+                                borderRadius: 2
+                            }}
+                        >
+                            {strength.feedback.warning}
+                        </Alert>
+                    )}
+
+                    {strength.feedback.suggestions.length > 0 && (
+                        <Box sx={{
+                            p: 2,
+                            bgcolor: mode === 'light' ? '#fefce8' : '#292524',
+                            borderRadius: 2,
+                            border: mode === 'light' ? '1px solid #fde047' : '1px solid #57534e'
+                        }}>
+                            <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
+                                Suggestions to improve:
+                            </Typography>
+                            <Box component="ul" sx={{ m: 0, pl: 2 }}>
+                                {strength.feedback.suggestions.map((suggestion, index) => (
+                                    <Box component="li" key={index} sx={{ mb: 0.5 }}>
+                                        <Typography variant="body2">
+                                            {suggestion}
+                                        </Typography>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+                    )}
+                </Box>
+            )}
+
+            {/* Crack Time Estimates */}
+            <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                gap: 2,
+                mb: 2
+            }}>
+                <Box sx={{
+                    p: 2,
+                    bgcolor: mode === 'light' ? '#f0f9ff' : '#0c1629',
+                    borderRadius: 2,
+                    border: mode === 'light' ? '1px solid #bae6fd' : '1px solid #1e3a8a'
+                }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        Online Attack (throttled)
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                        {strength.crackTimesDisplay.onlineThrottling100PerHour}
+                    </Typography>
+                </Box>
+
+                <Box sx={{
+                    p: 2,
+                    bgcolor: mode === 'light' ? '#fef2f2' : '#2d1b1b',
+                    borderRadius: 2,
+                    border: mode === 'light' ? '1px solid #fecaca' : '1px solid #7f1d1d'
+                }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        Offline Attack (slow hash)
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                        {strength.crackTimesDisplay.offlineSlowHashing1e4PerSecond}
+                    </Typography>
+                </Box>
+            </Box>
+
+            {/* Analysis Details */}
+            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', textAlign: 'center' }}>
+                Pattern analysis: {strength.sequence.map(seq => seq.pattern).join(', ')} •
+                Completed in {strength.calcTime}ms
+            </Typography>
         </Paper>
     );
-};
+}

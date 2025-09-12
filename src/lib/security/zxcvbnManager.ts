@@ -131,6 +131,39 @@ export class ZxcvbnManager {
     }
 
     /**
+ * Create configuration with custom wordlists from UI
+ * @param customWordlists - Object mapping language names to their wordlists
+ * @param userInputs - Array of user-specific words
+ * @returns Configuration object with custom wordlists and user inputs
+ */
+    public createConfigWithCustomWordlists(
+        customWordlists: { [language: string]: string[] } = {},
+        userInputs: string[] = []
+    ) {
+        const config = { ...DEFAULT_CONFIG };
+        const combinedDictionary = { ...DEFAULT_CONFIG.dictionary };
+
+        Object.entries(customWordlists).forEach(([language, words]) => {
+            if (words && words.length > 0) {
+                const dictionaryKey = `custom_${language}`;
+
+                // Only add if not already present
+                if (!(dictionaryKey in combinedDictionary)) {
+                    (combinedDictionary as Record<string, string[] | number>)[dictionaryKey] = words;
+                    console.log(`🔧 Added ${language} wordlist to zxcvbn dictionary: ${words.length} words`);
+                }
+            }
+        });
+
+        if (userInputs.length > 0) {
+            (combinedDictionary as Record<string, string[] | number>).userInputs = this.createUserInputDictionary(userInputs);
+        }
+
+        config.dictionary = combinedDictionary;
+        return config;
+    }
+
+    /**
      * Generate l33t speak variations of a word.
      * @param word - The word to generate variations for.
      * @returns An array of l33t speak variations.
@@ -283,6 +316,24 @@ export const createPasswordAnalyzer = (
 ) => {
     const manager = getZxcvbnManager()
     const config = manager.createConfigWithUserInputs(userInputs, languages)
+
+    return <T>(analysisFunction: () => T): T => {
+        return manager.withConfig(config, analysisFunction)
+    }
+}
+
+/**
+ * Utility function to safely analyze password with custom wordlists
+ * @param customWordlists - Object mapping language names to their wordlists  
+ * @param userInputs - User-specific words to include in analysis
+ * @returns Analysis function that can be called with zxcvbn
+ */
+export const createPasswordAnalyzerWithWordlists = (
+    customWordlists: { [language: string]: string[] } = {},
+    userInputs: string[] = []
+) => {
+    const manager = getZxcvbnManager()
+    const config = manager.createConfigWithCustomWordlists(customWordlists, userInputs)
 
     return <T>(analysisFunction: () => T): T => {
         return manager.withConfig(config, analysisFunction)

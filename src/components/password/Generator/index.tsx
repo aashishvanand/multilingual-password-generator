@@ -11,7 +11,6 @@ import React, { useState } from 'react';
 import { Box, Paper, Container, useMediaQuery, Skeleton, Snackbar, Alert } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles'
 import { usePasswordGeneration } from './hooks/usePasswordGeneration'
-import { usePasswordStrength } from '@/lib/security/passwordStrength'
 import { PasswordDisplay } from '../PasswordDisplay'
 import { OptionsPanel } from './OptionsPanel'
 import { ControlButtons } from '../PasswordDisplay/ControlButtons'
@@ -43,6 +42,7 @@ export function PasswordGenerator() {
     isClient,
     snackbarOpen,
     isCompromised,
+    passwordStrength,
     setPassword,
     setWordCount,
     setLength,
@@ -54,8 +54,6 @@ export function PasswordGenerator() {
     handleSnackbarClose
   } = usePasswordGeneration();
 
-  const strengthResult = usePasswordStrength(password);
-  
   const handleAnalyze = () => {
     setShowAnalysis(!showAnalysis);
   };
@@ -136,9 +134,9 @@ export function PasswordGenerator() {
             onAnalyze={handleAnalyze}
             mode={mode}
           />
-          
+
           {/* Fixed props: changed strengthResult to strength */}
-          {showAnalysis && <PasswordAnalysis password={password} strength={strengthResult} isCompromised={isCompromised} mode={mode} />}
+          {showAnalysis && <PasswordAnalysis strength={passwordStrength} isCompromised={isCompromised} mode={mode} />}
 
           {/* Fixed props: added hasError and mode */}
           <OptionsPanel
@@ -213,9 +211,9 @@ export function PasswordGenerator() {
               mode={mode}
             />
           </Box>
-          
+
           {/* Fixed props: changed strengthResult to strength */}
-          {showAnalysis && <PasswordAnalysis password={password} strength={strengthResult} isCompromised={isCompromised} mode={mode} />}
+          {showAnalysis && <PasswordAnalysis strength={passwordStrength} isCompromised={isCompromised} mode={mode} />}
 
           {/* Fixed props: added hasError and mode */}
           <OptionsPanel

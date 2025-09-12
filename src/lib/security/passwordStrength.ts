@@ -6,7 +6,7 @@
 
 import { useMemo, useEffect } from 'react'
 import { zxcvbn } from '@zxcvbn-ts/core'
-import { getZxcvbnManager, createPasswordAnalyzer } from './zxcvbnManager'
+import { getZxcvbnManager, createPasswordAnalyzer, createPasswordAnalyzerWithWordlists } from './zxcvbnManager'
 
 /**
  * Custom hook for calculating password strength using zxcvbn
@@ -51,6 +51,14 @@ export interface StrengthResult {
         i: number;
         j: number;
     }>;
+    // Add custom analysis
+    customAnalysis?: {
+        usesCustomWordlists: boolean;
+        loadedLanguages: string[];
+        totalCustomWords: number;
+        detectedPatterns: string[];
+        foundInCustomDictionary: boolean;
+    };
 }
 
 // Default strength result when no password is provided
@@ -79,7 +87,7 @@ const DEFAULT_RESULT: StrengthResult = Object.freeze({
  * @returns Password strength analysis result
  */
 export const usePasswordStrength = (
-    password: string, 
+    password: string,
     userInputs: string[] = [],
     languages: string[] = ['en']
 ): StrengthResult => {
@@ -152,6 +160,101 @@ export const usePasswordStrength = (
 }
 
 /**
+ * Enhanced hook to analyze password strength with custom wordlists from UI
+ * @param password - Password string to analyze
+ * @param customWordlists - Object mapping language names to their wordlists
+ * @param userInputs - Optional array of user-specific words to check against
+ * @returns Password strength analysis result
+ */
+export const usePasswordStrengthWithWordlists = (
+    password: string,
+    customWordlists: { [language: string]: string[] } = {},
+    userInputs: string[] = []
+): StrengthResult => {
+    // Get the zxcvbn manager instance
+    const manager = getZxcvbnManager()
+
+    // Memoize normalized user inputs to prevent unnecessary recalculations
+    const normalizedUserInputs = useMemo(() => {
+        return userInputs
+            .filter(input => input && typeof input === 'string')
+            .map(input => input.toLowerCase().trim())
+            .filter(input => input.length > 0)
+    }, [userInputs])
+
+    // Memoize custom wordlists
+    const normalizedWordlists = useMemo(() => {
+        const keys = Object.keys(customWordlists).sort();
+        const stableWordlists: { [key: string]: string[] } = {};
+        keys.forEach(key => {
+            stableWordlists[key] = customWordlists[key];
+        });
+        return stableWordlists;
+    }, [customWordlists]);
+
+    // Create password analyzer with current wordlists and user inputs
+    const analyzer = useMemo(() => {
+        return createPasswordAnalyzerWithWordlists(normalizedWordlists, normalizedUserInputs)
+    }, [normalizedWordlists, normalizedUserInputs])
+
+    // Memoize the analysis result
+    const strengthResult = useMemo(() => {
+        if (!password || password.length === 0) {
+            return DEFAULT_RESULT
+        }
+
+        return analyzer(() => {
+            const result = zxcvbn(password)
+
+            // Log which patterns were detected for debugging
+            if (result.sequence.length > 0) {
+                console.log('🔍 zxcvbn detected patterns:', result.sequence.map(seq => ({
+                    pattern: seq.pattern,
+                    token: seq.token,
+                    dictionary_name: 'dictionary_name' in seq ? (seq as Record<string, unknown>).dictionary_name : undefined
+                })));
+            }
+
+            return {
+                score: result.score,
+                guessesLog10: result.guessesLog10,
+                crackTimesDisplay: {
+                    offlineFastHashing1e10PerSecond: result.crackTimesDisplay.offlineFastHashing1e10PerSecond,
+                    offlineSlowHashing1e4PerSecond: result.crackTimesDisplay.offlineSlowHashing1e4PerSecond,
+                    onlineNoThrottling10PerSecond: result.crackTimesDisplay.onlineNoThrottling10PerSecond,
+                    onlineThrottling100PerHour: result.crackTimesDisplay.onlineThrottling100PerHour
+                },
+                feedback: {
+                    warning: result.feedback.warning || null,
+                    suggestions: [...result.feedback.suggestions] // Create copy to avoid mutation
+                },
+                calcTime: result.calcTime,
+                sequence: result.sequence.map(seq => ({
+                    pattern: seq.pattern,
+                    token: seq.token,
+                    i: seq.i,
+                    j: seq.j
+                }))
+            }
+        })
+    }, [password, analyzer])
+
+    // Cleanup effect to ensure manager is reset if component unmounts unexpectedly
+    useEffect(() => {
+        return () => {
+            // The manager handles its own cleanup, but we can ensure it's reset
+            // if there are any issues
+            if (!manager.isReady()) {
+                manager.reset()
+            }
+        }
+    }, [manager])
+
+    return strengthResult
+}
+
+
+/**
  * Utility function to get password strength score without full analysis
  * Useful for quick checks or when you only need the score
  * @param password - Password to analyze
@@ -160,14 +263,14 @@ export const usePasswordStrength = (
  * @returns Score from 0-4
  */
 export const getPasswordScore = (
-    password: string, 
+    password: string,
     userInputs: string[] = [],
     languages: string[] = ['en']
 ): number => {
     if (!password) return 0
-    
+
     const analyzer = createPasswordAnalyzer(userInputs, languages)
-    
+
     return analyzer(() => {
         const result = zxcvbn(password)
         return result.score
