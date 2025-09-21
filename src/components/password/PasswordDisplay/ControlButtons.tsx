@@ -4,7 +4,7 @@
  * It includes actions for copying, regenerating, and analyzing the password.
  */
 
-import { Stack, Button } from '@mui/material'
+import { Stack, Button, useMediaQuery } from '@mui/material'
 import { ContentCopy, Refresh, Check, Analytics } from '@mui/icons-material'
 
 /**
@@ -21,8 +21,14 @@ interface ControlButtonsProps {
 }
 
 export function ControlButtons({ copied, onCopy, onGenerate, onAnalyze, mode }: ControlButtonsProps) {
+    const isMobile = useMediaQuery('(max-width:600px)');
+
     return (
-        <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
+        <Stack 
+            direction={isMobile ? "column" : "row"} 
+            spacing={2} 
+            sx={{ mb: 4 }}
+        >
             <Button
                 variant="contained"
                 startIcon={copied ? <Check /> : <ContentCopy />}
