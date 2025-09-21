@@ -14,8 +14,8 @@ import { usePasswordGeneration } from './hooks/usePasswordGeneration'
 import { PasswordDisplay } from '../PasswordDisplay'
 import { OptionsPanel } from './OptionsPanel'
 import { ControlButtons } from '../PasswordDisplay/ControlButtons'
-import { PasswordAnalysis } from '../PasswordAnalysis' // Import the new component
-import { useTheme } from '@/components/ui/theme/ThemeProvider' // Fixed import path
+import { PasswordAnalysis } from '../PasswordAnalysis'
+import { useTheme } from '@/components/ui/theme/ThemeProvider'
 import { ErrorBoundary } from './ErrorBoundary'
 import ThemeToggle from './ThemeToggle'
 import PlatformCompatibility from './PlatformCompatibility'
@@ -28,7 +28,7 @@ import PlatformCompatibility from './PlatformCompatibility'
 export function PasswordGenerator() {
   const { theme, mode, toggleTheme } = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [showAnalysis, setShowAnalysis] = useState(false); // State for analysis visibility
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
   const {
     password,
@@ -78,7 +78,7 @@ export function PasswordGenerator() {
     );
   }
 
-  // Desktop Layout - ORIGINAL PRESERVED
+  // Desktop Layout
   const DesktopLayout = () => (
     <Box sx={{
       minHeight: '100vh',
@@ -103,7 +103,7 @@ export function PasswordGenerator() {
           }}
         >
 
-          {/* Password display area - ORIGINAL PRESERVED */}
+          {/* Password display area */}
           <Paper
             elevation={0}
             sx={{
@@ -152,14 +152,13 @@ export function PasswordGenerator() {
             mode={mode}
           />
 
-          {/* Platform Compatibility - ORIGINAL PRESERVED */}
+          {/* Platform Compatibility */}
           <PlatformCompatibility mode={mode} />
         </Paper>
       </Container>
     </Box>
   );
 
-  // Mobile Layout - ORIGINAL PRESERVED
   const MobileLayout = () => (
     <Box sx={{
       minHeight: '100vh',
@@ -181,7 +180,7 @@ export function PasswordGenerator() {
             bgcolor: mode === 'light' ? 'white' : '#121212',
           }}
         >
-          {/* Password Display - ORIGINAL PRESERVED */}
+          {/* Password Display*/}
           <Paper
             elevation={0}
             sx={{
@@ -229,7 +228,7 @@ export function PasswordGenerator() {
             mode={mode}
           />
 
-          {/* Platform Compatibility - ORIGINAL PRESERVED */}
+          {/* Platform Compatibility */}
           <PlatformCompatibility mode={mode} />
         </Paper>
       </Container>
